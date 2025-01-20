@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ContactDepartmentsTableSeeder::class,
             ContactJobTitlesTableSeeder::class,
             OpportunityStagesTableSeeder::class,
+            UserTableSeeder::class,
         ]);
     }
 }
