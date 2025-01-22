@@ -39,7 +39,8 @@
 
 <strong>
     <p class="mb-1">
-        {{ config('app.name') }} &copy; {{ date('Y') }}, all rights reserved. Created by <a href="#" class="text-info">Vladimir Faundez Hernandez</a>
+        {{ config('app.name') }} &copy; {{ date('Y') }}, all rights reserved. 
+        Created by <a href="https://github.com/vfaundez-dev" class="text-info">Vladimir Faundez Hernandez</a>
     </p>
 </strong>
 @stop
