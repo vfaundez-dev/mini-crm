@@ -17,15 +17,15 @@ return new class extends Migration
             $table->boolean('is_active')->default(1);
             $table->string('name', 150);
             $table->string('email');
-	        $table->string('main_phone')->nullable();
+	        $table->string('main_phone');
 	        $table->string('secondary_phone')->nullable();
-            $table->string('address_1')->nullable();
+            $table->string('address_1');
 	        $table->string('address_2')->nullable();
 	        $table->string('address_3')->nullable();
 	        $table->string('website')->nullable();
-            $table->unsignedBigInteger('country_id');
-            $table->unsignedBigInteger('state_id')->nullable();
-            $table->unsignedBigInteger('city_id')->nullable();
+            $table->string('country', 150);
+            $table->string('state', 150)->nullable();
+            $table->string('city', 150)->nullable();
             // Foreign Key Constraint
             $table->foreignId('owner_id')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('industry_id')->nullable()->constrained('client_industries')->onUpdate('cascade')->onDelete('restrict');

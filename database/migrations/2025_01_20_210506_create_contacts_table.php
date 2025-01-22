@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            $table->unsignedBigInteger('country_id');
-            $table->unsignedBigInteger('state_id');
-            $table->unsignedBigInteger('city_id');
+            $table->string('country', 150);
+            $table->string('state', 150)->nullable();
+            $table->string('city', 150)->nullable();
             // Foreign Key Constraint
             $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
             $table->foreignId('department_id')->nullable()->constrained('contact_departments')->onUpdate('cascade')->onDelete('restrict');

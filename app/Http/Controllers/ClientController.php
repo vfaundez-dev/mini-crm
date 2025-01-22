@@ -13,13 +13,23 @@ class ClientController extends Controller {
         $this->clientRepository = $clientRepository;
     }
     
-    public function index() {
-        $clients = $this->clientRepository->all();
-        return view( 'clients.index', compact('clients') );
+    public function index(Request $request) {
+        $ownerId = $request->get('owner');
+
+        $clients = $ownerId 
+            ? $this->clientRepository->allOwnerFiltered($ownerId) 
+            : $this->clientRepository->all();
+
+        return view( 'client.index', compact('clients') );
     }
 
     public function create() {
-        //
+        return view( 'client.form', [
+            'owners' => \App\Models\User::listOwners(),
+            'clientStatus' => \App\Models\ClientStatus::all(),
+            'clientTypes' => \App\Models\ClientType::all(),
+            'clientIndustries' => \App\Models\ClientIndustry::all()
+        ]);
     }
 
     public function store(Request $request) {
@@ -27,11 +37,19 @@ class ClientController extends Controller {
     }
 
     public function show(string $id) {
-        //
+        return view('client.show', [
+            'client' => $this->clientRepository->find($id)
+        ]);
     }
 
     public function edit(string $id) {
-        //
+        return view( 'client.form', [
+            'owners' => \App\Models\User::listOwners(),
+            'clientStatus' => \App\Models\ClientStatus::all(),
+            'clientTypes' => \App\Models\ClientType::all(),
+            'clientIndustries' => \App\Models\ClientIndustry::all(),
+            'client' => $this->clientRepository->find($id),
+        ]);
     }
 
     public function update(Request $request, string $id) {

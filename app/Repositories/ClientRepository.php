@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Client;
-
+use App\Models\User;
 
 class ClientRepository {
 
@@ -25,6 +25,13 @@ class ClientRepository {
 
   public function delete(Client $client): bool {
     return Client::find($client->id)->delete();
+  }
+
+  public function allOwnerFiltered($ownerId = null) {
+    if (!User::where('id', $ownerId)->exists()) {
+      return collect(); // Return empty collect if owner does not exist
+    }
+    return Client::where('is_active', 1)->where('owner_id', $ownerId)->get();
   }
 
 }
