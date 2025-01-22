@@ -1,0 +1,27 @@
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+.card {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+}
+.text-primary {
+  color: #64b5f6 !important;
+}
+a.btn-primary {
+  background-color: #64b5f6;
+  border-color: #64b5f6;
+}
+a.btn-primary:hover {
+  background-color: #42a5f5;
+  border-color: #42a5f5;
+}
+a.btn-outline-secondary {
+  color: #e0e0e0;
+  border-color: #757575;
+}
+a.btn-outline-secondary:hover {
+  background-color: #757575;
+  color: #121212;
+}
