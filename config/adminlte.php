@@ -317,7 +317,7 @@ return [
         ],
         [
             'text' => 'Clients',
-            'url' => '#',
+            'route' => 'client.index',
             'icon' => 'fas fa-briefcase',
         ],
         [
