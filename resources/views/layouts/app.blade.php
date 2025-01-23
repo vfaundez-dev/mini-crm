@@ -54,5 +54,14 @@
 {{-- Add common JS customizations --}}
 
 @push('js')
+  {{-- Toast alert messages for forms --}}
+  @if (session()->has('success'))
+    <x-toastr-notifications type="success" title="{{ session('success') }}" />
+  @endif
+  @if (session()->has('error'))
+    <x-toastr-notifications type="error" title="{{ session('error') }}" />
+  @endif
+  {{-- Toast alert messages for forms --}}
+
   @vite('resources/js/app.js')
 @endpush
