@@ -48,15 +48,15 @@
           </li>
           <li class="list-group-item">
             <strong>Country</strong>
-            <span class="float-right">{{ $client->country->name ?? 'N/A' }}</span>
+            <span class="float-right">{{ $client->country ?? 'N/A' }}</span>
           </li>
           <li class="list-group-item">
             <strong>State</strong>
-            <span class="float-right">{{ $client->state->name ?? 'N/A' }}</span>
+            <span class="float-right">{{ $client->state ?? 'N/A' }}</span>
           </li>
           <li class="list-group-item">
             <strong>City</strong>
-            <span class="float-right">{{ $client->city->name ?? 'N/A' }}</span>
+            <span class="float-right">{{ $client->city ?? 'N/A' }}</span>
           </li>
           <li class="list-group-item">
             <strong>Email</strong>

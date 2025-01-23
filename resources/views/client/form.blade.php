@@ -4,7 +4,7 @@
 
 @section('title', 'Clients')
 @section('content_header_title', 'Clients')
-@section('content_header_subtitle', 'New Client')
+@section('content_header_subtitle', isset($client) ? 'Edit Client' : 'New Client')
 
 {{-- Content body: main page content --}}
 
@@ -20,8 +20,8 @@
     {{-- Actions --}}
     <div class="col-12 mb-2">
       <div class="btn-group">
-        <a href="{{ route('client.index') }}" class="btn btn-primary mr-2">
-          <i class="fas fa-arrow-left"></i>
+        <a href="{{ route('client.index') }}" class="btn btn-outline-secondary bg-secondary mr-1">
+          <i class="fas fa-angle-double-left"></i> Back
         </a>
         <x-adminlte-button
           class="btn-flat"
@@ -127,12 +127,30 @@
 
               <x-adminlte-input
                 type="text"
+                id="country"
+                name="country"
+                label="Country"
+                placeholder="Your country..."
+                value="{{ old('country', $client?->country ?? '') }}"
+                required
+              ></x-adminlte-input>
+
+              <x-adminlte-input
+                type="text"
+                id="state"
+                name="state"
+                label="State"
+                placeholder="Your state..."
+                value="{{ old('state', $client?->state ?? '') }}"
+              ></x-adminlte-input>
+
+              <x-adminlte-input
+                type="text"
                 id="city"
                 name="city"
                 label="City"
-                placeholder="City..."
+                placeholder="Your city..."
                 value="{{ old('city', $client?->city ?? '') }}"
-                required
               ></x-adminlte-input>
                 
             </div>
@@ -154,7 +172,7 @@
             id="email"
             name="email"
             label="Email"
-            placeholder="Email..."
+            placeholder="Your email..."
             fgroup-class="col-12"
             class="bg-white"
             value="{{ old('email', $client?->email ?? '') }}"
@@ -166,19 +184,23 @@
             id="main_phone"
             name="main_phone"
             label="Main Phone"
-            placeholder="+56 ...."
+            placeholder="123456..."
             fgroup-class="col-12"
             class="bg-white"
             value="{{ old('main_phone', $client?->main_phone ?? '') }}"
             required
-          />
+          >
+            <x-slot name="bottomSlot">
+              <small class="text-info">Only numbers</small>
+            </x-slot>
+          </x-adminlte-input>
 
           <x-adminlte-input
             type="text"
             id="secondary_phone"
             name="secondary_phone"
             label="Secondary Phone"
-            placeholder="+56 ..."
+            placeholder="123456..."
             fgroup-class="col-12"
             value="{{ old('secondary_phone', $client?->secondary_phone ?? '') }}"
             class="bg-white"

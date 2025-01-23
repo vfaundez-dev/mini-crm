@@ -17,10 +17,10 @@ $heads = ['ID', 'Name', 'Status', 'Type', 'Industry', 'Owner', 'Country', 'Email
           <td>{{ $client->id }}</td>
           <td>{{ $client->name }}</td>
           <td>{{ $client->status->status }}</td>
-          <td>{{ $client->type->name }}</td>
-          <td>{{ $client->industry->name }}</td>
+          <td>{{ $client->type->type }}</td>
+          <td>{{ $client->industry->industry }}</td>
           <td>{{ $client->owner->name ?? 'N/A' }}</td>
-          <td>{{ $client->country->name ?? 'N/A' }}</td>
+          <td>{{ $client->country ?? 'N/A' }}</td>
           <td>{{ $client->email }}</td>
           <td width="20">
             <div class="btn-group">

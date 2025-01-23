@@ -11,20 +11,20 @@ class Client extends Model{
 	protected $fillable = [
 		'is_active',
 		'name',
-		'status_id',
-		'type_id',
-		'industry_id',
 		'email',
 		'main_phone',
 		'secondary_phone',
-		'country_id',
-		'state_id',
-		'city_id',
 		'address_1',
 		'address_2',
 		'address_3',
 		'website',
+		'country',
+		'state',
+		'city',
 		'owner_id',
+		'industry_id',
+		'status_id',
+		'type_id'
 	];
 
 	public function owner(){
