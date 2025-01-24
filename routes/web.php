@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
@@ -27,3 +28,4 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 */
 
 Route::resource('client', ClientController::class)->middleware('auth');
+Route::resource('contact', ContactController::class)->middleware('auth');

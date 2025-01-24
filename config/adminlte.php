@@ -322,7 +322,7 @@ return [
         ],
         [
             'text' => 'Contacts',
-            'url' => '#',
+            'route' => 'contact.index',
             'icon' => 'fas fa-address-book',
         ],
         [
