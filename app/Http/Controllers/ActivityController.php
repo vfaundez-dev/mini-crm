@@ -32,7 +32,9 @@ class ActivityController extends Controller {
     }
 
     public function show(string $id) {
-        //
+        return view('activity.show', [
+            'activity' => $this->activityRepository->find($id)
+        ]);
     }
 
     public function edit(string $id) {

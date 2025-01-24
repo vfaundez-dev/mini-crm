@@ -11,6 +11,10 @@ class ActivityRepository {
     return Activity::all();
   }
 
+  public function find(string $id): ?Activity {
+    return Activity::find($id);
+  }
+
   public function allOwnerFiltered($ownerId = null) {
     if (!User::where('id', $ownerId)->exists()) {
       return collect(); // Return empty collect if owner does not exist
