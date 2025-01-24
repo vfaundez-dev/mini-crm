@@ -113,7 +113,18 @@ class ContactController extends Controller {
     }
 
     public function destroy(string $id) {
-        //
+        try {
+
+            $contact = $this->contactRepository->find($id);
+            if (!$contact) return redirect()->route('contact.index')->withErrors(['error' => 'Contact not found.']);
+
+            $this->contactRepository->delete($contact);
+            return redirect()->route('contact.index')->with('success', 'Contact deleted.');
+
+        } catch (\Throwable $e) {
+            Log::error('Error in ContactController::destroy: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error deleting contact. Try again...');
+        }
     }
 
 }
