@@ -7,7 +7,7 @@
 @section('content_body')
 <div class="row">
 
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-right mb-2">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-2">
         <div class="btn-group">
             <a href="{{ route('contact.index') }}" class="btn btn-outline-secondary bg-secondary mr-1">
                 <i class="fas fa-angle-double-left"></i> Back

@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Clients')
+@section('title', 'Client Details: ' . $client->name)
 @section('content_header_title', 'Clients')
-@section('content_header_subtitle', 'Details '.$client->name)
+@section('content_header_subtitle', 'Details: ' . $client->name)
 
 @section('plugins.Datatables', true)
 
