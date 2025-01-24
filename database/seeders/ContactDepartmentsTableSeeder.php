@@ -34,6 +34,7 @@ class ContactDepartmentsTableSeeder extends Seeder
             ['id' => 19, 'department' => 'Business Development'],
             ['id' => 20, 'department' => 'Compliance'],
             ['id' => 21, 'department' => 'Health and Safety'],
+            ['id' => 22, 'department' => 'Other'],
         ];
 
         DB::table('contact_departments')->insert($contact_departments);

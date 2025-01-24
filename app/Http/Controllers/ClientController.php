@@ -44,9 +44,9 @@ class ClientController extends Controller {
     public function create() {
         return view( 'client.form', [
             'owners' => \App\Models\User::listOwners(),
-            'clientStatus' => \App\Models\ClientStatus::all(),
-            'clientTypes' => \App\Models\ClientType::all(),
-            'clientIndustries' => \App\Models\ClientIndustry::all()
+            'clientStatus' => $this->clientRepository->clientStatus(),
+            'clientTypes' => $this->clientRepository->clientType(),
+            'clientIndustries' => $this->clientRepository->clientIndustry()
         ]);
     }
 
@@ -77,9 +77,9 @@ class ClientController extends Controller {
     public function edit(string $id) {
         return view( 'client.form', [
             'owners' => \App\Models\User::listOwners(),
-            'clientStatus' => \App\Models\ClientStatus::all(),
-            'clientTypes' => \App\Models\ClientType::all(),
-            'clientIndustries' => \App\Models\ClientIndustry::all(),
+            'clientStatus' => $this->clientRepository->clientStatus(),
+            'clientTypes' => $this->clientRepository->clientType(),
+            'clientIndustries' => $this->clientRepository->clientIndustry(),
             'client' => $this->clientRepository->find($id),
         ]);
     }

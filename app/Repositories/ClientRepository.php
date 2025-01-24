@@ -34,4 +34,16 @@ class ClientRepository {
     return Client::where('is_active', 1)->where('owner_id', $ownerId)->get();
   }
 
+  public function clientStatus() {
+    return \App\Models\ClientStatus::all();
+  }
+
+  public function clientType() {
+    return \App\Models\ClientType::all();
+  }
+
+  public function clientIndustry() {
+    return \App\Models\ClientIndustry::all();
+  }
+
 }

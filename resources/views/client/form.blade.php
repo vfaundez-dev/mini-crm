@@ -2,7 +2,7 @@
 
 {{-- Customize layout sections --}}
 
-@section('title', 'Clients')
+@section('title', isset($contact) ? 'Edit Client' : 'New Client')
 @section('content_header_title', 'Clients')
 @section('content_header_subtitle', isset($client) ? 'Edit Client' : 'New Client')
 

@@ -19,9 +19,9 @@ class Contact extends Model {
 		'email',
 		'phone',
 		'address',
-		'country_id',
-		'state_id',
-		'city_id',
+		'country',
+		'state',
+		'city',
 		'client_id',
 	];
 

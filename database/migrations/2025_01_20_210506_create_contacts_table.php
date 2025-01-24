@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->boolean('is_active')->default(1);
-            $table->string('first_name');
-            $table->string('last_name')->nullable();
-            $table->string('full_name');
-            $table->string('gender');
-            $table->string('email');
-            $table->string('phone')->nullable();
+            $table->string('first_name', 150);
+            $table->string('last_name', 150)->nullable();
+            $table->string('full_name', 200);
+            $table->string('gender', 50);
+            $table->string('email', 50);
+            $table->string('phone', 50)->nullable();
             $table->string('address')->nullable();
             $table->string('country', 150);
             $table->string('state', 150)->nullable();
