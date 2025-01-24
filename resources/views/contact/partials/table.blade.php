@@ -23,7 +23,7 @@ $heads = ['ID', 'Name', 'Client', 'Gender', 'Job Title', 'Department', 'Email', 
                     <td>{{ $contact->department->department }}</td>
                     <td>{{ $contact->email }}</td>
                     <td>{{ $contact->phone }}</td>
-                    <td>{{ $contact->country->name }}</td>
+                    <td>{{ $contact->country }}</td>
                     <td width="20">
                         <div class="btn-group">
                             <a href="{{ route('contact.edit', $contact) }}" class="btn btn-outline-info mr-2">

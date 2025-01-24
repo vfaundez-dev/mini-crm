@@ -32,7 +32,9 @@ class ContactController extends Controller {
     }
 
     public function show(string $id) {
-        //
+        return view( 'contact.show', [
+            'contact' => $this->contactRepository->find($id)
+        ]);
     }
 
     public function edit(string $id) {
