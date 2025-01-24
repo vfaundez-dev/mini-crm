@@ -332,7 +332,7 @@ return [
         ],
         [
             'text' => 'Activities',
-            'url' => '#',
+            'route' => 'activity.index',
             'icon' => 'fas fa-clipboard-list',
         ],
         [

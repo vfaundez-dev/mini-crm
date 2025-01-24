@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
@@ -29,3 +30,4 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 
 Route::resource('client', ClientController::class)->middleware('auth');
 Route::resource('contact', ContactController::class)->middleware('auth');
+Route::resource('activity', ActivityController::class)->middleware('auth');
