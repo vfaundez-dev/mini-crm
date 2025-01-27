@@ -2,6 +2,8 @@
 
 {{-- Customize layout sections --}}
 
+@section('plugins.Sweetalert2', true)
+
 @section('title', isset($activity) ? 'Edit Activity' : 'New Activity')
 @section('content_header_title', 'Activities')
 @section('content_header_subtitle', isset($activity) ? 'Edit Activity' : 'New Activity')
@@ -111,7 +113,7 @@
             @endforeach
           </x-adminlte-select>
 
-          <x-adminlte-select2
+          <x-adminlte-select
               id="client_id"
               name="client_id"
               label="Client"
@@ -139,7 +141,7 @@
             @endforeach
           </x-adminlte-select>
 
-          <x-adminlte-select2
+          <x-adminlte-select
             id="opportunity_id"
             name="opportunity_id"
             label="Opportunity"
@@ -224,13 +226,22 @@
 
 
 @push('js')
-  @vite(['resources/js/s2Location.js', 'resources/js/s2crm.js'])
   @if(isset($activity) && $activity->completed == 0)
   <script>
     const btnComplete = document.getElementById('btnComplete');
     const completeForm = document.getElementById('completeForm');
-    btnComplete.addEventListener('click', () => {
-      completeForm.submit();
+    btnComplete.addEventListener('click', (event) => {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Are you sure to close the current activity?',
+        text: 'The changes will be irreversible and you will not be able to edit the activity again',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, finish',
+      }).then( result => {
+        if (result.isConfirmed) {
+          completeForm.submit();
+        }
+      });
     });
   </script>
   @endif

@@ -153,13 +153,13 @@ class ActivityController extends Controller {
                 'status' => 'required|in:' . implode(',', $activityRepository->status()),
                 'priority' => 'required|in:' . implode(',', $activityRepository->priority()),
                 'owner_id' => 'required|exists:users,id',
-                'client_id' => 'nullable|exists:clients,id',
-                'contact_id' => 'nullable|exists:contacts,id',
-                'opportunity_id' => 'nullable|exists:opportunities,id',
                 'description' => 'required|string|max:150',
                 'scheduled_date' => 'required|date',
                 'end_date' => 'required|date|after:scheduled_date',
                 'follow_up_notes' => 'nullable|string|min:5|max:2000',
+                'client_id' => 'nullable|sometimes|exists:clients,id|required_without_all:contact_id,opportunity_id',
+                'contact_id' => 'nullable|sometimes|exists:contacts,id|required_without_all:client_id,opportunity_id',
+                'opportunity_id' => 'nullable|sometimes|exists:opportunities,id|required_without_all:client_id,contact_id',
             ];
         }
 
