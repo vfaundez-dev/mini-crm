@@ -327,7 +327,7 @@ return [
         ],
         [
             'text' => 'Opportunities',
-            'url' => '#',
+            'route' => 'opportunity.index',
             'icon' => 'fas fa-hand-holding-usd',
         ],
         [

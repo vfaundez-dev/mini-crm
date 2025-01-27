@@ -34,7 +34,7 @@ class ActivityRepository {
     if (!User::where('id', $ownerId)->exists()) {
       return collect(); // Return empty collect if owner does not exist
     }
-    return Activity::where('is_active', 1)->where('owner_id', $ownerId)->get();
+    return Activity::where('owner_id', $ownerId)->get();
   }
 
   public function status(): array {

@@ -35,7 +35,7 @@ class ContactRepository {
     if (!User::where('id', $ownerId)->exists()) {
       return collect(); // Return empty collect if owner does not exist
     }
-    return Contact::where('is_active', 1)->where('owner_id', $ownerId)->get();
+    return Contact::where('owner_id', $ownerId)->get();
   }
 
   public function contactJobTitles() {

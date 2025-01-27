@@ -31,7 +31,7 @@ class ClientRepository {
     if (!User::where('id', $ownerId)->exists()) {
       return collect(); // Return empty collect if owner does not exist
     }
-    return Client::where('is_active', 1)->where('owner_id', $ownerId)->get();
+    return Client::where('owner_id', $ownerId)->get();
   }
 
   public function clientStatus() {
