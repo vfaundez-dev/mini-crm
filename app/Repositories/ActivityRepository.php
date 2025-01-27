@@ -26,6 +26,10 @@ class ActivityRepository {
     return Activity::find($activity->id)->update($data);
   }
 
+  public function delete(Activity $activity): bool {
+    return Activity::find($activity->id)->delete();
+  }
+
   public function allOwnerFiltered($ownerId = null) {
     if (!User::where('id', $ownerId)->exists()) {
       return collect(); // Return empty collect if owner does not exist

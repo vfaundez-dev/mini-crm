@@ -113,7 +113,18 @@ class ActivityController extends Controller {
     }
 
     public function destroy(string $id) {
-        //
+        try {
+
+            $activity = $this->activityRepository->find($id);
+            if (!$activity) return redirect()->route('activity.index')->withErrors(['error' => 'Activity not found.']);
+
+            $this->activityRepository->delete($activity);
+            return redirect()->route('activity.index')->with('success', 'Activity deleted.');
+
+        } catch (\Throwable $e) {
+            Log::error('Error in ActivityController::destroy: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error deleting activity. Try again...');
+        }
     }
 
     public function completed(string $id) {
