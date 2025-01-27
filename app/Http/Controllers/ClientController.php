@@ -104,7 +104,7 @@ class ClientController extends Controller {
             return redirect()->back()->with('error', 'Database error occurred. Please check your input...')->withInput();
         } catch (\Exception $e) {
             Log::error('Exception error in ClientController::update: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Error creating client. Try again...')->withInput();
+            return redirect()->back()->with('error', 'Error updating client. Try again...')->withInput();
         }
     }
 

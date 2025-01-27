@@ -50,10 +50,10 @@ class ActivityController extends Controller {
     public function store(Request $request) {
         try {
 
-            $validatedData = $request->validate(ActivityController::getValidateRules($this->activityRepository));
+            $validatedData = $request->validate(ActivityController::getValidateRules( $this->activityRepository ));
+            if ($validatedData['status'] == 'completed') $validatedData['completed'] = 1;
 
             $validatedData = $this->activityRepository->create($validatedData);
-            if ($validatedData['status'] == 'completed') $validatedData['completed'] = 1;
             return redirect()->route('activity.index')->with('success', 'Activity created.');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -89,7 +89,27 @@ class ActivityController extends Controller {
     }
 
     public function update(Request $request, string $id) {
-        //
+        try {
+
+            $validatedData = $request->validate(ActivityController::getValidateRules( $this->activityRepository ));
+            if ($validatedData['status'] == 'completed') $validatedData['completed'] = 1;
+
+            $activity = $this->activityRepository->find($id);
+            if (!$activity) return redirect()->route('activity.index')->withErrors(['error' => 'Activity not found.']);
+
+            $this->activityRepository->update($activity, $validatedData);
+            return redirect()->route('activity.index')->with('success', 'Activity updated.');
+
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Illuminate\Database\QueryException $e) {
+            Log::error('Database error in ActivityController::update: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Database error occurred. Please check your input.')->withInput();
+        } catch (\Exception $e) {
+            Log::error('Exception error in ActivityController::update: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error updating activity. Try again...')->withInput();
+        }
     }
 
     public function destroy(string $id) {
