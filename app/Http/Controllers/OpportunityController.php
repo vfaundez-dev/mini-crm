@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\ClientRepository;
 use App\Repositories\OpportunityRepository;
 use Illuminate\Http\Request;
 
 class OpportunityController extends Controller {
 
     protected $opportunityRepository;
+    protected $clientRepository;
 
-    public function __construct(OpportunityRepository $opportunityRepository) {
+    public function __construct(OpportunityRepository $opportunityRepository, ClientRepository $clientRepository) {
         $this->opportunityRepository = $opportunityRepository;
+        $this->clientRepository = $clientRepository;
     }
     
     public function index(Request $request) {
@@ -24,7 +27,14 @@ class OpportunityController extends Controller {
     }
 
     public function create() {
-        //
+        return view( 'opportunity.form',
+            [
+                'owners' => \App\Models\User::listOwners(),
+                'listStatus' => $this->opportunityRepository->listStatus(),
+                'stages' => \App\Models\OpportunityStage::all(),
+                'clients' => $this->clientRepository->all(),
+            ]
+        );
     }
 
     public function store(Request $request) {
@@ -44,6 +54,10 @@ class OpportunityController extends Controller {
     }
 
     public function destroy(string $id) {
+        //
+    }
+
+    public function close(Request $request, string $id) {
         //
     }
 

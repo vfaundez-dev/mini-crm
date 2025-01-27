@@ -31,6 +31,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 
 Route::resource('client', ClientController::class)->middleware('auth');
 Route::resource('contact', ContactController::class)->middleware('auth');
+Route::post('/opportunity/{opportunity}/close', [OpportunityController::class, 'close'])
+      ->middleware('auth')->name('opportunity.close');
 Route::resource('opportunity', OpportunityController::class)->middleware('auth');
-Route::post('activity/{activity}/completed', [ActivityController::class, 'completed'])->middleware('auth')->name('activity.completed');
+Route::post('activity/{activity}/completed', [ActivityController::class, 'completed'])
+      ->middleware('auth')->name('activity.completed');
 Route::resource('activity', ActivityController::class)->middleware('auth');
