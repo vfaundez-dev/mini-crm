@@ -25,9 +25,11 @@ $heads = ['ID', 'Name', 'Type', 'Status', 'Priority', 'Scheduled Date', 'End Dat
             <td>{{ $activity->owner->name }}</td>
             <td class="text-right" width="20">
               <div class="btn-group">
+                @if(isset($activity) && $activity->completed == 0)
                 <a href="{{ route('activity.edit', $activity) }}" class="btn btn-outline-info mr-2">
                   <i class="fas fa-edit"></i>
                 </a>
+                @endif
                 <form action="{{ route('activity.destroy', $activity) }}" method="POST">
                   @csrf
                   @method('DELETE')

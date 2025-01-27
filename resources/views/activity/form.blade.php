@@ -27,7 +27,7 @@
           theme="success"
           icon="fas fa-lg fa-save"
         />
-        @if($activity && $activity->completed == 0)
+        @if(isset($activity) && $activity->completed == 0)
         <x-adminlte-button
           id="btnComplete"
           label="Finish"
@@ -116,8 +116,8 @@
               name="client_id"
               label="Client"
               placeholder="Select client..."
-              required
           >
+            <option value=""></option>
             @foreach ($clients as $client)
               <option value="{{ $client->id }}" {{ old('client_id', $activity?->client_id ?? '') == $client->id ? 'selected' : '' }}>
                 {{ $client->name }}
@@ -130,8 +130,8 @@
             name="contact_id"
             label="Contact"
             placeholder="Select contact..."
-            required
           >
+            <option value=""></option>
             @foreach ($contacts as $contact)
               <option value="{{ $contact->id }}" {{ old('contact_id', $activity?->contact_id ?? '') == $contact->id ? 'selected' : '' }}>
                 {{ $contact->full_name }}
@@ -145,11 +145,12 @@
             label="Opportunity"
             placeholder="Select opportunity..."
           >
-          @foreach ($oportunities as $opportunity)
-              <option value="{{ $opportunity->id }}" {{ old('opportunity_id', $activity?->opportunity_id ?? '') == $opportunity->id ? 'selected' : '' }}>
-                  {{ $opportunity->name }}
-              </option>
-          @endforeach
+            <option value=""></option>
+            @foreach ($oportunities as $opportunity)
+                <option value="{{ $opportunity->id }}" {{ old('opportunity_id', $activity?->opportunity_id ?? '') == $opportunity->id ? 'selected' : '' }}>
+                    {{ $opportunity->name }}
+                </option>
+            @endforeach
           </x-adminlte-select>
 
         </div>
@@ -224,7 +225,7 @@
 
 @push('js')
   @vite(['resources/js/s2Location.js', 'resources/js/s2crm.js'])
-  @if($activity && $activity->completed == 0)
+  @if(isset($activity) && $activity->completed == 0)
   <script>
     const btnComplete = document.getElementById('btnComplete');
     const completeForm = document.getElementById('completeForm');
@@ -233,7 +234,7 @@
     });
   </script>
   @endif
-  @if ($activity && $activity->completed == 1)
+  @if (isset($activity) && $activity->completed == 1)
   <script>
     const formActivity = document.getElementById('formActivity');
     formActivity.querySelectorAll('input, select, textarea, button[type="submit"]').forEach( el => {

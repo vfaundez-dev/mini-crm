@@ -13,6 +13,7 @@ class ActivityController extends Controller {
     protected $activityRepository;
     protected $clientRepository;
     protected $contactRepository;
+    protected static array $validateRules;
 
     public function __construct(
         ActivityRepository $activityRepository, ClientRepository $clientRepository, ContactRepository $contactRepository
@@ -47,7 +48,23 @@ class ActivityController extends Controller {
     }
 
     public function store(Request $request) {
-        //
+        try {
+
+            $validatedData = $request->validate(ActivityController::getValidateRules($this->activityRepository));
+
+            $validatedData = $this->activityRepository->create($validatedData);
+            if ($validatedData['status'] == 'completed') $validatedData['completed'] = 1;
+            return redirect()->route('activity.index')->with('success', 'Activity created.');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Illuminate\Database\QueryException $e) {
+            Log::error('Database error in ActivityController::store: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Database error occurred. Please check your input.')->withInput();
+        } catch (\Exception $e) {
+            Log::error('Exception error in ActivityController::store: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error creating activity. Try again...')->withInput();
+        }
     }
 
     public function show(string $id) {
@@ -95,6 +112,27 @@ class ActivityController extends Controller {
             Log::error('Error in ActivityController::completed: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Error deleting activity. Try again...');
         }
+    }
+
+    protected static function getValidateRules(ActivityRepository $activityRepository): array {
+        if (!isset(self::$validateRules)) {
+            self::$validateRules = [
+                'name' => 'required|string|max:150',
+                'type_id' => 'required|exists:activity_types,id',
+                'status' => 'required|in:' . implode(',', $activityRepository->status()),
+                'priority' => 'required|in:' . implode(',', $activityRepository->priority()),
+                'owner_id' => 'required|exists:users,id',
+                'client_id' => 'nullable|exists:clients,id',
+                'contact_id' => 'nullable|exists:contacts,id',
+                'opportunity_id' => 'nullable|exists:opportunities,id',
+                'description' => 'required|string|max:150',
+                'scheduled_date' => 'required|date',
+                'end_date' => 'required|date|after:scheduled_date',
+                'follow_up_notes' => 'nullable|string|min:5|max:2000',
+            ];
+        }
+
+        return self::$validateRules;
     }
 
 }
