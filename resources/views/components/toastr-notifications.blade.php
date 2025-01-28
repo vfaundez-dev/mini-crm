@@ -6,6 +6,7 @@
     'hideDuration': '2500',
     'newestOnTop': true,
     'preventDuplicates': true,
+    'positionClass': 'toast-top-center',
   }
 
   toastr["{{ $type }}"]("{{ $message ?? '' }}", "{{ $title }}")
