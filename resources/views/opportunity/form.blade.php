@@ -31,7 +31,7 @@
           theme="success"
           icon="fas fa-lg fa-save"
         />
-        @if (isset($opportunity) && $opportunity?->id && $opportunity?->status === \App\Models\Opportunity::STATUS_OPEN)
+        @if (isset($opportunity) && $opportunity?->id && intval($opportunity?->status) === OpportunityRepository::STATUS_OPEN)
         <x-adminlte-button
           id="btnComplete"
           label="Close"
@@ -68,7 +68,7 @@
             required
           >
             @foreach ($owners as $owner)
-              <option value="{{ $owner->id }}" {{ old('owner_id', $activity?->owner_id ?? Auth::user()->id) == $owner->id ? 'selected' : '' }}>
+              <option value="{{ $owner->id }}" {{ old('owner_id', $opportunity?->owner_id ?? Auth::user()->id) == $owner->id ? 'selected' : '' }}>
                 {{ $owner->name }}
               </option>
             @endforeach
@@ -83,7 +83,7 @@
           >
             <option value=""></option>
             @foreach ($clients as $client)
-              <option value="{{ $client->id }}" {{ old('client_id', $activity?->client_id ?? Auth::user()->id) == $client->id ? 'selected' : '' }}>
+              <option value="{{ $client->id }}" {{ old('client_id', $opportunity?->client_id ?? '') == $client->id ? 'selected' : '' }}>
                 {{ $client->name }}
               </option>
             @endforeach
@@ -203,6 +203,7 @@
 </form>
 {{-- Form --}}
 
+@if ( isset($opportunity?->status) && intval($opportunity?->status) === OpportunityRepository::STATUS_OPEN )
 {{-- Modal --}}
 <x-adminlte-modal
     id="modalCloseOpportunity"
@@ -211,7 +212,7 @@
     icon="fas fa-check-circle"
     size='md'
 >
-  <form action="" method="POST">
+  <form action={{ route('opportunity.close', $opportunity) }} method="POST">
     @csrf
 
     <x-adminlte-select
@@ -246,6 +247,8 @@
   </form>
 </x-adminlte-modal>
 {{-- Modal --}}
+@endif
+
 @stop
 
 {{-- Extras --}}
@@ -255,7 +258,7 @@
 @endpush
 
 @push('js')
-  @if ( isset($opportunity?->status) && $opportunity?->status !== OpportunityRepository::STATUS_OPEN )
+  @if ( isset($opportunity?->status) && intval($opportunity?->status) !== OpportunityRepository::STATUS_OPEN )
   <script>
     const formOpportunity = document.getElementById('fOpportunity');
     formOpportunity.querySelectorAll('input, select, textarea, button[type="submit"]').forEach( el => {

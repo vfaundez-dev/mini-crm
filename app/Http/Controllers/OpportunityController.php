@@ -18,12 +18,13 @@ class OpportunityController extends Controller {
     
     public function index(Request $request) {
         $ownerId = $request->get('owner');
+        $listStatus = $this->opportunityRepository->listStatus();
 
         $opportunities = $ownerId 
             ? $this->opportunityRepository->allOwnerFiltered($ownerId) 
             : $this->opportunityRepository->all();
 
-        return view( 'opportunity.index', compact('opportunities') );
+        return view( 'opportunity.index', compact('opportunities', 'listStatus') );
     }
 
     public function create() {
@@ -46,7 +47,15 @@ class OpportunityController extends Controller {
     }
 
     public function edit(string $id) {
-        //
+        return view( 'opportunity.form',
+            [
+                'owners' => \App\Models\User::listOwners(),
+                'listStatus' => $this->opportunityRepository->listStatus(),
+                'stages' => \App\Models\OpportunityStage::all(),
+                'clients' => $this->clientRepository->all(),
+                'opportunity' => $this->opportunityRepository->find($id),
+            ]
+        );
     }
 
     public function update(Request $request, string $id) {

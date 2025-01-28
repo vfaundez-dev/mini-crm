@@ -18,7 +18,7 @@ $heads = ['ID', 'Name', 'Owner', 'Client', 'Status', 'Stage', 'Created', 'Succes
           <td>{{ $opportunity->name }}</td>
           <td>{{ $opportunity->owner->name }}</td>
           <td>{{ $opportunity->client->name }}</td>
-          <td>{{ $status[ $opportunity->status ] }}</td>
+          <td>{{ $listStatus[$opportunity->status] }}</td>
           <td>{{ $opportunity->stage->stage }}</td>
           <td>{{ $opportunity->created_date }}</td>
           <td>{{ $opportunity->success_probability }}%</td>
