@@ -90,7 +90,36 @@ class OpportunityController extends Controller {
     }
 
     public function update(Request $request, string $id) {
-        //
+        try {
+
+            $validatedData = $this->validateRequestData($request);
+            $validatedData['success_probability'] = $this->opportunityService->calculateSuccessProbability( $validatedData['stage_id'] );
+
+            $opportunity = $this->opportunityRepository->find($id);
+            if (!$opportunity) return redirect()->route('opportunity.index')->withErrors(['error' => 'Opportunity not found.']);
+
+            // OPP Validations
+            $this->opportunityService->validateCloseOpp( $validatedData['status'] );
+            $this->opportunityService->validateActualCloseDate( $validatedData['status'], $validatedData['actual_close_date'] );
+            $this->opportunityService->validateSuccessProbability( $validatedData['stage_id'], $validatedData['success_probability'] );
+            // OPP Calculations
+            $validatedData['weighted_value'] = $this->opportunityService->calculateWeightedValue(
+                $validatedData['estimated_value'] ?? 0,
+                $validatedData['success_probability']
+            );
+
+            $this->opportunityRepository->update($opportunity, $validatedData);
+            return redirect()->route('opportunity.index')->with('success', 'Opportunity updated.');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Illuminate\Database\QueryException $e) {
+            Log::error('Database error in OpportunityController::update: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Database error occurred. Please check your input.')->withInput();
+        } catch (\Exception $e) {
+            Log::error('Exception error in OpportunityController::update: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error updating opportunity. Try again...')->withInput();
+        }
     }
 
     public function destroy(string $id) {
