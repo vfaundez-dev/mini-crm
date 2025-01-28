@@ -49,17 +49,10 @@ class OpportunityController extends Controller {
 
             $validatedData = $this->validateRequestData($request);
             $validatedData['success_probability'] = $this->opportunityService->calculateSuccessProbability( $validatedData['stage_id'] );
-            // OPP Validations
-            $this->opportunityService->validateCloseOpp( $validatedData['status'] );
-            $this->opportunityService->validateActualCloseDate( $validatedData['status'], $validatedData['actual_close_date'] );
-            $this->opportunityService->validateSuccessProbability( $validatedData['stage_id'], $validatedData['success_probability'] );
-            // OPP Calculations
-            $validatedData['weighted_value'] = $this->opportunityService->calculateWeightedValue(
-                $validatedData['estimated_value'] ?? 0,
-                $validatedData['success_probability']
-            );
+            
+            $formatedData = $this->opportunityService->prepareOpportunity($validatedData);
 
-            $this->opportunityRepository->create($validatedData);
+            $this->opportunityRepository->create($formatedData);
             return redirect()->route('opportunity.index')->with('success', 'Opportunity created.');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -98,17 +91,9 @@ class OpportunityController extends Controller {
             $opportunity = $this->opportunityRepository->find($id);
             if (!$opportunity) return redirect()->route('opportunity.index')->withErrors(['error' => 'Opportunity not found.']);
 
-            // OPP Validations
-            $this->opportunityService->validateCloseOpp( $validatedData['status'] );
-            $this->opportunityService->validateActualCloseDate( $validatedData['status'], $validatedData['actual_close_date'] );
-            $this->opportunityService->validateSuccessProbability( $validatedData['stage_id'], $validatedData['success_probability'] );
-            // OPP Calculations
-            $validatedData['weighted_value'] = $this->opportunityService->calculateWeightedValue(
-                $validatedData['estimated_value'] ?? 0,
-                $validatedData['success_probability']
-            );
+            $formatedData = $this->opportunityService->prepareOpportunity($validatedData);
 
-            $this->opportunityRepository->update($opportunity, $validatedData);
+            $this->opportunityRepository->update($opportunity, $formatedData);
             return redirect()->route('opportunity.index')->with('success', 'Opportunity updated.');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -138,7 +123,31 @@ class OpportunityController extends Controller {
     }
 
     public function close(Request $request, string $id) {
-        //
+        try {
+
+            $opportunity = $this->opportunityRepository->find($id);
+            if (!$opportunity) return redirect()->route('opportunity.index')->withErrors(['error' => 'Opportunity not found.']);
+            
+            $validatedData = $request->validate([
+                'closed_status' => [
+                    'required', 'in:'. $this->opportunityRepository::STATUS_CLOSED_WON .','. $this->opportunityRepository::STATUS_CLOSED_LOST
+                ],
+            ], [ 'closed_status' => ['Only select Close Won or Close Lost'] ]);
+
+            $opportunity = $this->opportunityService->prepareCloseOpportunity( $opportunity, $validatedData['closed_status'] );
+
+            $opportunity->save();
+            return redirect()->route('opportunity.index')->with('success', 'Opportunity closed.');
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Illuminate\Database\QueryException $e) {
+            Log::error('Database error in OpportunityController::update: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Database error occurred. Please check your input.')->withInput();
+        } catch (\Exception $e) {
+            Log::error('Exception error in OpportunityController::update: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error closing opportunity. Try again...')->withInput();
+        }
     }
 
     protected function validateRequestData(Request $request) {

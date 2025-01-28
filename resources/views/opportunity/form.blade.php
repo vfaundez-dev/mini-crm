@@ -205,6 +205,7 @@
 
 @if ( isset($opportunity?->status) && intval($opportunity?->status) === OpportunityRepository::STATUS_OPEN )
 {{-- Modal --}}
+<form action={{ route('opportunity.close', $opportunity) }} method="POST">
 <x-adminlte-modal
     id="modalCloseOpportunity"
     title="Close Opportunity"
@@ -212,13 +213,12 @@
     icon="fas fa-check-circle"
     size='md'
 >
-  <form action={{ route('opportunity.close', $opportunity) }} method="POST">
     @csrf
 
     <x-adminlte-select
-      id="final_status"
-      name="final_status"
-      label="Final Status"
+      id="closed_status"
+      name="closed_status"
+      label="Closed Status"
       required
     >
       <option value="{{ OpportunityRepository::STATUS_CLOSED_WON }}">
@@ -243,9 +243,8 @@
         data-dismiss="modal"
       />
     </x-slot>
-
-  </form>
-</x-adminlte-modal>
+  </x-adminlte-modal>
+</form>
 {{-- Modal --}}
 @endif
 
