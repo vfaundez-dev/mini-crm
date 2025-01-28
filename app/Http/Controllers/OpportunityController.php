@@ -123,7 +123,18 @@ class OpportunityController extends Controller {
     }
 
     public function destroy(string $id) {
-        //
+        try {
+
+            $opportunity = $this->opportunityRepository->find($id);
+            if (!$opportunity) return redirect()->route('opportunity.index')->withErrors(['error' => 'Opportunity not found.']);
+
+            $this->opportunityRepository->delete($opportunity);
+            return redirect()->route('opportunity.index')->with('success', 'Opportunity deleted.');
+
+        } catch (\Throwable $e) {
+            Log::error('Error in OpportunityController::destroy: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error deleting opportunity. Try again...');
+        }
     }
 
     public function close(Request $request, string $id) {
