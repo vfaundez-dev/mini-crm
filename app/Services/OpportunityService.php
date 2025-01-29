@@ -48,7 +48,7 @@ class OpportunityService {
   }
 
   public function calculateWeightedValue($estimatedValue, $successProbability) {
-    return ($estimatedValue > 0 && $successProbability >= 0 && $successProbability <= 100)
+    return ( $estimatedValue > 0 && $successProbability >= 0 && $successProbability <= 100 )
       ? $estimatedValue * ($successProbability / 100)
       : 0;
   }

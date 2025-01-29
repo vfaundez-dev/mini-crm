@@ -67,7 +67,10 @@ class OpportunityController extends Controller {
     }
 
     public function show(string $id) {
-        //
+        return view('opportunity.show', [
+            'opportunity' => $this->opportunityRepository->find($id),
+            'listStatus' => $this->opportunityRepository->listStatus(),
+        ]);
     }
 
     public function edit(string $id) {
