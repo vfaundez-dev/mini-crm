@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository {
 
@@ -24,6 +25,10 @@ class UserRepository {
 
   public function delete(User $user): bool {
     return User::find($user->id)->delete();
+  }
+
+  public function generateHashPassword($password) {
+    return Hash::make( $password );
   }
 
 }

@@ -61,7 +61,6 @@
             label="Password"
             placeholder="Your password..."
             value="{{ old('password' ?? '') }}"
-            required
           >
             <x-slot name="appendSlot">
                 <x-adminlte-button
@@ -74,12 +73,11 @@
 
           <x-adminlte-input
             type="password"
-            id="repeat_password"
-            name="repeat_password"
-            label="Repeat Password"
+            id="password_confirmation"
+            name="password_confirmation"
+            label="Confirm Password"
             placeholder="Repeat password..."
-            value="{{ old('repeat_password' ?? '') }}"
-            required
+            value="{{ old('password_confirmation' ?? '') }}"
           >
             <x-slot name="appendSlot">
                 <x-adminlte-button
