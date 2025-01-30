@@ -48,8 +48,6 @@ class OpportunityController extends Controller {
         try {
 
             $validatedData = $this->validateRequestData($request);
-            $validatedData['success_probability'] = $this->opportunityService->calculateSuccessProbability( $validatedData['stage_id'] );
-            
             $formatedData = $this->opportunityService->prepareOpportunity($validatedData);
 
             $this->opportunityRepository->create($formatedData);
@@ -89,12 +87,11 @@ class OpportunityController extends Controller {
         try {
 
             $validatedData = $this->validateRequestData($request);
-            $validatedData['success_probability'] = $this->opportunityService->calculateSuccessProbability( $validatedData['stage_id'] );
 
             $opportunity = $this->opportunityRepository->find($id);
             if (!$opportunity) return redirect()->route('opportunity.index')->withErrors(['error' => 'Opportunity not found.']);
 
-            $formatedData = $this->opportunityService->prepareOpportunity($validatedData);
+            $formatedData = $this->opportunityService->prepareOpportunity($validatedData, $opportunity);
 
             $this->opportunityRepository->update($opportunity, $formatedData);
             return redirect()->route('opportunity.index')->with('success', 'Opportunity updated.');

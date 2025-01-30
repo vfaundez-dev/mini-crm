@@ -55,30 +55,55 @@ class OpportunityService {
 
   /* PROCCESS OPPORTUNITY */
 
-  public function prepareOpportunity($validatedData) {
-    // OPP Validations
-    $this->validateCloseOpp( $validatedData['status'] );
+  public function prepareOpportunity($validatedData, $opportunity = null) {
+
+    // 1. If it is a new opportunity, validate that it only has the status "Open"
+    if (!$opportunity) {
+      $this->validateCloseOpp( $validatedData['status'] );
+    }
+
+    // 2. If an opportunity has a status other than "Open", we update the "Stage" value
+    if ( intval($validatedData['status']) !== $this->opportunityRepository::STATUS_OPEN ) {
+      $validatedData['stage_id'] = match ( intval($validatedData['status']) ) {
+        $this->opportunityRepository::STATUS_CLOSED_WON => 6,
+        $this->opportunityRepository::STATUS_CLOSED_LOST => 7,
+        default => $validatedData['stage_id'],
+      };
+    }
+
+    // 3. Calculate the success probability value
+    $validatedData['success_probability'] = $this->calculateSuccessProbability( $validatedData['stage_id'] );
+
+    // 4. Validate "Actual Close Date" and "Success Probability"
     $this->validateActualCloseDate( $validatedData['status'], $validatedData['actual_close_date'] );
     $this->validateSuccessProbability( $validatedData['stage_id'], $validatedData['success_probability'] );
-    // OPP Calculations
+
+    // 5. Calculate "Weighted Value"
     $validatedData['weighted_value'] = $this->calculateWeightedValue(
-      $validatedData['estimated_value'] ?? 0,
+      $validatedData['estimated_value'],
       $validatedData['success_probability']
     );
 
     return $validatedData;
+    
   }
 
   public function prepareCloseOpportunity($opportunity, $closedStatus) {
+
+    // 1. Validate only the closing of open opportunities
     $this->validateCloseOpp($opportunity->status);
 
-    // Update status, success probability and closing date
+    // 2. Update status, stage, success probability and closing date
     $opportunity->status = $closedStatus;
-    $opportunity->success_probability = 
-        intval($closedStatus) == $this->opportunityRepository::STATUS_CLOSED_WON ? 100 : 0;
+    $opportunity->stage_id = match ( intval($closedStatus) ) {
+      $this->opportunityRepository::STATUS_CLOSED_WON => 6,
+      $this->opportunityRepository::STATUS_CLOSED_LOST => 7,
+      default => $opportunity->stage_id,
+    };
+    $opportunity->success_probability = intval($closedStatus) == $this->opportunityRepository::STATUS_CLOSED_WON ? 100 : 0;
     $opportunity->actual_close_date = now();
 
-    // Recalculate the weighted value if necessary
+    // 3. Recalculate the weighted value if necessary
     if ($opportunity->status === $this->opportunityRepository::STATUS_CLOSED_WON) {
         $opportunity->weighted_value = $this->calculateWeightedValue($opportunity->estimated_value, 100);
     } else {
