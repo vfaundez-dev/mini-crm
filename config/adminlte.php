@@ -337,7 +337,7 @@ return [
         ],
         [
             'text' => 'Users',
-            'url' => '#',
+            'route' => 'user.index',
             'icon' => 'fas fa-users-cog',
         ],
     ],
