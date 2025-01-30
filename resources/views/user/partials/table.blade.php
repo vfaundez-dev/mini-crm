@@ -5,13 +5,13 @@ $heads = ['ID', 'Name', 'Email', 'Actions'];
 <div class="card card-info">
   <div class="card-header">
     <h3 class="card-title">
-      <a href="{{ route('opportunity.create') }}" class="btn btn-outline-light bg-info">
+      <a href="{{ route('user.create') }}" class="btn btn-outline-light bg-info">
         <i class="fas fa-plus"></i> New User
       </a>
     </h3>
   </div>
   <div class="card-body">
-    <x-adminlte-datatable id="table-opportunities" :heads="$heads" head-theme="dark" hoverable>
+    <x-adminlte-datatable id="table-users" :heads="$heads" head-theme="dark" hoverable>
       @foreach ($users as $user)
         <tr>
           <td>{{ $user->id }}</td>
