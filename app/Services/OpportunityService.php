@@ -103,11 +103,13 @@ class OpportunityService {
     $opportunity->success_probability = intval($closedStatus) == $this->opportunityRepository::STATUS_CLOSED_WON ? 100 : 0;
     $opportunity->actual_close_date = now();
 
-    // 3. Recalculate the weighted value if necessary
-    if ($opportunity->status === $this->opportunityRepository::STATUS_CLOSED_WON) {
-        $opportunity->weighted_value = $this->calculateWeightedValue($opportunity->estimated_value, 100);
-    } else {
-        $opportunity->weighted_value = 0;
+    // 3. Recalculate weighted value if necessary
+    if ( intval($closedStatus) !== $this->opportunityRepository::STATUS_OPEN ) {
+      $opportunity->weighted_value = match ( intval($closedStatus) ) {
+        $this->opportunityRepository::STATUS_CLOSED_WON => $this->calculateWeightedValue($opportunity->estimated_value, 100),
+        $this->opportunityRepository::STATUS_CLOSED_LOST => 0,
+        default => $opportunity->weighted_value,
+      };
     }
 
     return $opportunity;
