@@ -17,7 +17,7 @@
   <div class="card text-center p-4 shadow rounded" style="max-width: 600px;">
         
     <div>
-      <img src="{{ asset('img/logo2.png') }}" alt="Logo de {{ config('app.name') }}" class="mb-4" style="max-width: 150px;">
+      <img src="{{ asset('img/logo_crm_2.png') }}" alt="Logo de {{ config('app.name') }}" style="max-width: 200px">
     </div>
 
     <p class="text-light mt-3">

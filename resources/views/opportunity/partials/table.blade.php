@@ -24,9 +24,11 @@ $heads = ['ID', 'Name', 'Owner', 'Client', 'Status', 'Stage', 'Created', 'Succes
           <td>{{ $opportunity->success_probability }}%</td>
           <td width="20">
             <div class="btn-group">
+              @if ( intval($opportunity->status) == 0)
               <a href="{{ route('opportunity.edit', $opportunity) }}" class="btn btn-outline-info mr-2">
                 <i class="fas fa-edit"></i>
               </a>
+              @endif
               <form action="{{ route('opportunity.destroy', $opportunity) }}" method="POST">
                 @csrf
                 @method('DELETE')

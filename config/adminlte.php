@@ -64,7 +64,7 @@ return [
     */
 
     'logo' => '<strong>'. getenv('APP_NAME') .'</strong>',
-    'logo_img' => 'img/logo2.png',
+    'logo_img' => 'img/logo_crm_2.png',
     'logo_img_class' => 'brand-image elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-sm',
