@@ -24,13 +24,12 @@ class OpportunityController extends Controller {
     
     public function index(Request $request) {
         $ownerId = $request->get('owner');
-        $listStatus = $this->opportunityRepository->listStatus();
 
         $opportunities = $ownerId 
             ? $this->opportunityRepository->allOwnerFiltered($ownerId) 
             : $this->opportunityRepository->all();
 
-        return view( 'opportunity.index', compact('opportunities', 'listStatus') );
+        return view( 'opportunity.index', compact('opportunities') );
     }
 
     public function create() {

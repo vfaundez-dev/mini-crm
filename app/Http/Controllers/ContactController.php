@@ -133,7 +133,7 @@ class ContactController extends Controller {
             'job_title_id' => ['required', 'exists:contact_job_titles,id'],
             'department_id' => ['required', 'exists:contact_departments,id'],
             'client_id' => ['nullable', 'exists:clients,id'],
-            'email' => ['required', 'email', ( $id ? 'unique:clients,email,'.$id.',id' : 'unique:clients,email' )],
+            'email' => ['required', 'email', ( $id ? 'unique:contacts,email,'.$id.',id' : 'unique:contacts,email' )],
             'phone' => ['required', 'numeric', 'min:8'],
             'address' => ['nullable', 'string', 'min:6'],
             'country' => ['required', 'string', 'max:150'],

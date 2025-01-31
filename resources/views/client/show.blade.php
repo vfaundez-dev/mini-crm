@@ -118,13 +118,13 @@
       <div class="card-body">
         <div class="tab-content" id="client-relations-tabContent">
           <div class="tab-pane fade active show" id="client-contacts" role="tabpanel" aria-labelledby="client-contacts-tab">
-              
+            @include('contact.partials.table', [ 'contacts' => $client->contacts ])
           </div>
           <div class="tab-pane fade" id="client-opportunities" role="tabpanel" aria-labelledby="client-opportunities-tab">
-              
+            @include('opportunity.partials.table', [ 'opportunities' => $client->opportunities ])
           </div>
           <div class="tab-pane fade" id="client-activities" role="tabpanel" aria-labelledby="client-activities-tab">
-              
+            @include('activity.partials.table', [ 'activities' => $client->activities ])
           </div>
         </div>
       </div>

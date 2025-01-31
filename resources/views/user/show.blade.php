@@ -12,9 +12,11 @@
       <a href="{{ route('user.index') }}" class="btn btn-outline-secondary bg-secondary mr-1">
         <i class="fas fa-angle-double-left"></i> Back
       </a>
+      @if ($user->id !== 1)
       <a href="{{ route('user.edit', $user) }}" class="btn btn-outline-light bg-info px-4">
         <i class="fas fa-edit"></i> Edit
       </a>
+      @endif
     </div>
   </div>
 

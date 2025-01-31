@@ -18,8 +18,9 @@ $heads = ['ID', 'Name', 'Email', 'Actions'];
           <td>{{ $user->name }}</td>
           <td>{{ $user->email }}</td>
           <td width="20">
-            @if ($user->id !== 1)
+            
               <div class="btn-group">
+                @if ($user->id !== 1)
                 <a href="{{ route('user.edit', $user) }}" class="btn btn-outline-info mr-2">
                   <i class="fas fa-edit"></i>
                 </a>
@@ -30,11 +31,11 @@ $heads = ['ID', 'Name', 'Email', 'Actions'];
                     <i class="fas fa-trash-alt"></i>
                   </button>
                 </form>
+                @endif
                 <a href="{{ route('user.show', $user) }}" class="btn btn-outline-secondary">
                   <i class="far fa-eye"></i>
                 </a>
               </div>
-            @endif
           </td>
         </tr>
       @endforeach

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\ActivityRepository;
 use App\Repositories\ClientRepository;
 use App\Repositories\ContactRepository;
+use App\Repositories\OpportunityRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -13,13 +14,18 @@ class ActivityController extends Controller {
     protected $activityRepository;
     protected $clientRepository;
     protected $contactRepository;
+    protected $opportunityRepository;
 
     public function __construct(
-        ActivityRepository $activityRepository, ClientRepository $clientRepository, ContactRepository $contactRepository
+        ActivityRepository $activityRepository,
+        ClientRepository $clientRepository,
+        ContactRepository $contactRepository,
+        OpportunityRepository $opportunityRepository
     ) {
         $this->activityRepository = $activityRepository;
         $this->clientRepository = $clientRepository;
         $this->contactRepository = $contactRepository;
+        $this->opportunityRepository = $opportunityRepository;
     }
     
     public function index(Request $request) {
@@ -38,7 +44,7 @@ class ActivityController extends Controller {
                 'owners' => \App\Models\User::listOwners(),
                 'clients' => $this->clientRepository->all(),
                 'contacts' => $this->contactRepository->all(),
-                'oportunities' => [],
+                'oportunities' => $this->opportunityRepository->all(),
                 'types' => $this->activityRepository->types(),
                 'statuses' => $this->activityRepository->status(),
                 'priorities' => $this->activityRepository->priority()
@@ -78,7 +84,7 @@ class ActivityController extends Controller {
                 'owners' => \App\Models\User::listOwners(),
                 'clients' => $this->clientRepository->all(),
                 'contacts' => $this->contactRepository->all(),
-                'oportunities' => [],
+                'oportunities' => $this->opportunityRepository->all(),
                 'types' => $this->activityRepository->types(),
                 'statuses' => $this->activityRepository->status(),
                 'priorities' => $this->activityRepository->priority(),
