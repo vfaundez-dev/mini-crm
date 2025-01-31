@@ -63,7 +63,8 @@ class UserController extends Controller {
 
             $validateData = $this->validateRequestData($request, $id);
             $user = $this->userRepository->find($id);
-            if (!$user) return redirect()->route('user.index')->withErrors(['error' => 'User not found.']);
+            if (!$user) return redirect()->route('user.index')->with(['error' => 'User not found.']);
+            if ($user->id == 1) return redirect()->route('user.index')->with(['error' => 'Admin user cannot be modified']);
 
             data_forget($validateData, 'email'); // Skip email
             $validateData['password'] =  $validateData['password']
@@ -88,7 +89,8 @@ class UserController extends Controller {
         try {
 
             $user = $this->userRepository->find($id);
-            if (!$user) return redirect()->route('user.index')->withErrors(['error' => 'User not found.']);
+            if (!$user) return redirect()->route('user.index')->with(['error' => 'User not found.']);
+            if ($user->id == 1) return redirect()->route('user.index')->with(['error' => 'Admin user cannot be deleted']);
 
             $this->userRepository->delete($user);
             return redirect()->route('user.index')->with('success', 'User deleted.');
@@ -103,7 +105,7 @@ class UserController extends Controller {
         try {
 
             $user = $this->userRepository->find($id);
-            if (!$user) return redirect()->route('user.show')->withErrors(['error' => 'User not found.']);
+            if (!$user) return redirect()->route('user.show')->with(['error' => 'User not found.']);
 
             $validateData = $request->validate([
                 'password' => [ 'required', 'confirmed', Password::min(6)->numbers()->letters() ]
