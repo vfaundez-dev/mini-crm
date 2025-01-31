@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Opportunity;
 use App\Models\User;
+use \Illuminate\Support\Collection;
 
 class OpportunityRepository {
 
@@ -11,7 +12,7 @@ class OpportunityRepository {
   const STATUS_CLOSED_LOST = 1;
   const STATUS_CLOSED_WON = 2;
 
-  public function all() {
+  public function all(): Collection {
     return Opportunity::all();
   }
 
@@ -31,14 +32,14 @@ class OpportunityRepository {
     return Opportunity::find($opportunity->id)->delete();
   }
 
-  public function allOwnerFiltered($ownerId = null) {
+  public function allOwnerFiltered($ownerId = null): Collection {
     if (!User::where('id', $ownerId)->exists()) {
       return collect(); // Return empty collect if owner does not exist
     }
     return Opportunity::where('owner_id', $ownerId)->get();
   }
 
-  public static function listStatus() {
+  public static function listStatus(): array {
     return [
       self::STATUS_OPEN => 'Open',
       self::STATUS_CLOSED_LOST => 'Closed Lost',

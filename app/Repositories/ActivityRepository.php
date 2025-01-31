@@ -4,13 +4,14 @@ namespace App\Repositories;
 
 use App\Models\Activity;
 use App\Models\User;
+use \Illuminate\Support\Collection;
 
 class ActivityRepository {
 
   public const STATUS = ['pending', 'in progress', 'completed', 'canceled'];
   public const PRIORITY = ['low', 'medium', 'high'];
 
-  public function all() {
+  public function all(): Collection {
     return Activity::all();
   }
 
@@ -30,7 +31,7 @@ class ActivityRepository {
     return Activity::find($activity->id)->delete();
   }
 
-  public function allOwnerFiltered($ownerId = null) {
+  public function allOwnerFiltered($ownerId = null): Collection {
     if (!User::where('id', $ownerId)->exists()) {
       return collect(); // Return empty collect if owner does not exist
     }
@@ -45,7 +46,7 @@ class ActivityRepository {
     return self::PRIORITY;
   }
 
-  public function types() {
+  public function types(): Collection {
     return \App\Models\ActivityType::all();
   }
 

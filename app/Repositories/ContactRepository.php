@@ -4,10 +4,11 @@ namespace App\Repositories;
 
 use App\Models\Contact;
 use App\Models\User;
+use \Illuminate\Support\Collection;
 
 class ContactRepository {
 
-  public function all() {
+  public function all(): Collection {
     return Contact::all();
   }
 
@@ -31,18 +32,18 @@ class ContactRepository {
     return trim($first_name . ' ' . $last_name);
   }
 
-  public function allOwnerFiltered($ownerId = null) {
+  public function allOwnerFiltered($ownerId = null): Collection {
     if (!User::where('id', $ownerId)->exists()) {
       return collect(); // Return empty collect if owner does not exist
     }
     return Contact::where('owner_id', $ownerId)->get();
   }
 
-  public function contactJobTitles() {
+  public function contactJobTitles(): Collection {
     return \App\Models\ContactJobTitle::all();
   }
 
-  public function contactDepartments() {
+  public function contactDepartments(): Collection {
     return \App\Models\ContactDepartment::all();
   }
 

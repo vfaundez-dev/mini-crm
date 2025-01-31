@@ -3,11 +3,12 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use \Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository {
 
-  public function all() {
+  public function all(): Collection {
     return User::all();
   }
 
