@@ -134,7 +134,7 @@
       <div class="card-body">
         <div class="tab-content" id="opportunity-relations-tabContent">
           <div class="tab-pane fade active show" id="opportunity-clients" role="tabpanel" aria-labelledby="opportunity-clients-tab">
-              Clients Here
+            @include('client.partials.table', [ 'clients' => [ $opportunity->client ] ])
           </div>
         </div>
       </div>
