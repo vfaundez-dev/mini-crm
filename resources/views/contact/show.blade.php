@@ -4,6 +4,8 @@
 @section('content_header_title', 'Contact')
 @section('content_header_subtitle', 'Details: ' . $contact->full_name)
 
+@section('plugins.Datatables', true)
+
 @section('content_body')
 <div class="row">
 
@@ -92,7 +94,7 @@
 		<div class="card-body">
 			<div class="tab-content" id="contact-relations-tabContent">
 				<div class="tab-pane fade active show" id="contact-activities" role="tabpanel" aria-labelledby="contact-activities-tab">
-						
+					@include('activity.partials.table', [ 'activities' => $contact->activities ])
 				</div>
 			</div>
 			</div>
