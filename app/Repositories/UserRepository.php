@@ -27,8 +27,20 @@ class UserRepository {
     return User::find($user->id)->delete();
   }
 
-  public function generateHashPassword($password) {
+  public function generateHashPassword($password): string {
     return Hash::make( $password );
+  }
+
+  public function getDetailsUser(User $user): array {
+    return [
+      'clients' => $user->clients()->count() ?? '',
+      'activities' => $user->activities()->count() ?? '',
+      'opportunities' => $user->opportunities()->count() ?? ''
+    ];
+  }
+
+  public function updatePassword(User $user, array $data): bool {
+    return User::find($user->id)->update($data);
   }
 
 }

@@ -46,4 +46,5 @@ Route::resource('activity', ActivityController::class)->middleware('auth');
 |--------------------------------------------------------------------------
 */
 
+Route::post('user/{user}/change-password', [Usercontroller::class, 'changePassword'])->middleware('auth')->name('user.change_password');
 Route::resource('user', UserController::class)->middleware('auth');

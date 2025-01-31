@@ -45,7 +45,11 @@ class UserController extends Controller {
     }
 
     public function show(string $id) {
-        //
+        $user = $this->userRepository->find($id);
+        return view('user.show', [
+            'user' => $user ?? [],
+            'detailsUser' => $this->userRepository->getDetailsUser($user)
+        ]);
     }
 
     public function edit(string $id) {
@@ -92,6 +96,32 @@ class UserController extends Controller {
         } catch (\Throwable $e) {
             Log::error('Error in UserController::destroy: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Error deleting user. Try again...');
+        }
+    }
+
+    public function changePassword(Request $request, string $id) {
+        try {
+
+            $user = $this->userRepository->find($id);
+            if (!$user) return redirect()->route('user.show')->withErrors(['error' => 'User not found.']);
+
+            $validateData = $request->validate([
+                'password' => [ 'required', 'confirmed', Password::min(6)->numbers()->letters() ]
+            ]);
+
+            $password = $this->userRepository->generateHashPassword( $validateData['password'] );
+
+            $this->userRepository->update($user, ['password' => $password]);
+            return redirect()->route('user.index')->with('success', 'Updated user password.');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Illuminate\Database\QueryException $e) {
+            Log::error('Database error in UserController::changePassword: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Database error occurred. Please check your input.')->withInput();
+        } catch (\Exception $e) {
+            Log::error('Exception error in UserController::changePassword: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error change password to user. Try again...')->withInput();
         }
     }
 

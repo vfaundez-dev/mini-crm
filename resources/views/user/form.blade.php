@@ -64,11 +64,11 @@
             value="{{ old('password' ?? '') }}"
           >
             <x-slot name="appendSlot">
-                <x-adminlte-button
-                  theme="outline-secondary"
-                  icon="fas fa-eye"
-                  class="btn-show-pass"
-                />
+              <x-adminlte-button
+                theme="outline-secondary"
+                icon="fas fa-eye"
+                class="btn-show-pass"
+              />
             </x-slot>
           </x-adminlte-input>
 
@@ -81,11 +81,11 @@
             value="{{ old('password_confirmation' ?? '') }}"
           >
             <x-slot name="appendSlot">
-                <x-adminlte-button
-                  theme="outline-secondary"
-                  icon="fas fa-eye"
-                  class="btn-show-pass"
-                />
+              <x-adminlte-button
+                theme="outline-secondary"
+                icon="fas fa-eye"
+                class="btn-show-pass"
+              />
             </x-slot>
           </x-adminlte-input>
 
