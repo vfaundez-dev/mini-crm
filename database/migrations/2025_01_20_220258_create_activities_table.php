@@ -16,9 +16,9 @@ return new class extends Migration
             $table->timestamps();
             $table->boolean('is_active')->default(1);
             $table->boolean('completed')->default(0);
-            $table->string('name');
-            $table->string('status');
-            $table->string('priority');
+            $table->string('name', 150);
+            $table->string('status', 50);
+            $table->string('priority', 50);
             $table->dateTime('scheduled_date');
             $table->dateTime('end_date');
             $table->string('description', 150);
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->foreignId('client_id')->nullable()->constrained('clients')->onDelete('set null');
             $table->foreignId('contact_id')->nullable()->constrained('contacts')->onDelete('set null');
             $table->foreignId('opportunity_id')->nullable()->constrained('opportunities')->onDelete('set null');
-            $table->foreignId('type_id')->nullable()->constrained('activity_types')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('type_id')->constrained('activity_types')->onUpdate('cascade')->onDelete('restrict');
         });
     }
 

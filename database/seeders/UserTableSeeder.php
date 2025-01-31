@@ -18,6 +18,8 @@ class UserTableSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@vfhminicrm.com',
             'password' => Hash::make('asdf1234'),
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
         ]);
     }
 }
