@@ -51,6 +51,7 @@
             label="Email"
             placeholder="Your user email..."
             value="{{ old('email', $user?->email ?? '') }}"
+            :readonly="isset($user?->email)"
             required
           />
 
