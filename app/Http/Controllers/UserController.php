@@ -81,7 +81,18 @@ class UserController extends Controller {
     }
 
     public function destroy(string $id) {
-        //
+        try {
+
+            $user = $this->userRepository->find($id);
+            if (!$user) return redirect()->route('user.index')->withErrors(['error' => 'User not found.']);
+
+            $this->userRepository->delete($user);
+            return redirect()->route('user.index')->with('success', 'User deleted.');
+
+        } catch (\Throwable $e) {
+            Log::error('Error in UserController::destroy: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error deleting user. Try again...');
+        }
     }
 
     protected function validateRequestData(Request $request, $userId = null) {
