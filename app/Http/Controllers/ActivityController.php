@@ -13,7 +13,6 @@ class ActivityController extends Controller {
     protected $activityRepository;
     protected $clientRepository;
     protected $contactRepository;
-    protected static array $validateRules;
 
     public function __construct(
         ActivityRepository $activityRepository, ClientRepository $clientRepository, ContactRepository $contactRepository
@@ -50,10 +49,10 @@ class ActivityController extends Controller {
     public function store(Request $request) {
         try {
 
-            $validatedData = $request->validate(ActivityController::getValidateRules( $this->activityRepository ));
-            if ($validatedData['status'] == 'completed') $validatedData['completed'] = 1;
+            $validateData = $this->validateRequestData($request);
+            if ($validateData['status'] == 'completed') $validateData['completed'] = 1;
 
-            $validatedData = $this->activityRepository->create($validatedData);
+            $validateData = $this->activityRepository->create($validateData);
             return redirect()->route('activity.index')->with('success', 'Activity created.');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -91,13 +90,13 @@ class ActivityController extends Controller {
     public function update(Request $request, string $id) {
         try {
 
-            $validatedData = $request->validate(ActivityController::getValidateRules( $this->activityRepository ));
-            if ($validatedData['status'] == 'completed') $validatedData['completed'] = 1;
+            $validateData = $this->validateRequestData($request);
+            if ($validateData['status'] == 'completed') $validateData['completed'] = 1;
 
             $activity = $this->activityRepository->find($id);
-            if (!$activity) return redirect()->route('activity.index')->withErrors(['error' => 'Activity not found.']);
+            if (!$activity) return redirect()->route('activity.index')->with(['error' => 'Activity not found.']);
 
-            $this->activityRepository->update($activity, $validatedData);
+            $this->activityRepository->update($activity, $validateData);
             return redirect()->route('activity.index')->with('success', 'Activity updated.');
 
 
@@ -116,7 +115,7 @@ class ActivityController extends Controller {
         try {
 
             $activity = $this->activityRepository->find($id);
-            if (!$activity) return redirect()->route('activity.index')->withErrors(['error' => 'Activity not found.']);
+            if (!$activity) return redirect()->route('activity.index')->with(['error' => 'Activity not found.']);
 
             $this->activityRepository->delete($activity);
             return redirect()->route('activity.index')->with('success', 'Activity deleted.');
@@ -131,7 +130,7 @@ class ActivityController extends Controller {
         try {
 
             $activity = $this->activityRepository->find($id);
-            if (!$activity) return redirect()->back()->withErrors(['error' => 'Activity not found.'])->withInput();
+            if (!$activity) return redirect()->back()->with(['error' => 'Activity not found.'])->withInput();
 
             if ($activity->status == 'completed' && $activity->completed == 1)
                 return redirect()->route('activity.index')->with('info', 'Activity has been completed.');
@@ -145,25 +144,21 @@ class ActivityController extends Controller {
         }
     }
 
-    protected static function getValidateRules(ActivityRepository $activityRepository): array {
-        if (!isset(self::$validateRules)) {
-            self::$validateRules = [
-                'name' => 'required|string|max:150',
-                'type_id' => 'required|exists:activity_types,id',
-                'status' => 'required|in:' . implode(',', $activityRepository->status()),
-                'priority' => 'required|in:' . implode(',', $activityRepository->priority()),
-                'owner_id' => 'required|exists:users,id',
-                'description' => 'required|string|max:150',
-                'scheduled_date' => 'required|date',
-                'end_date' => 'required|date|after:scheduled_date',
-                'follow_up_notes' => 'nullable|string|min:5|max:2000',
-                'client_id' => 'nullable|sometimes|exists:clients,id|required_without_all:contact_id,opportunity_id',
-                'contact_id' => 'nullable|sometimes|exists:contacts,id|required_without_all:client_id,opportunity_id',
-                'opportunity_id' => 'nullable|sometimes|exists:opportunities,id|required_without_all:client_id,contact_id',
-            ];
-        }
-
-        return self::$validateRules;
+    protected function validateRequestData(Request $request) {
+        return $request->validate([
+            'name' => ['required', 'string', 'max:150'],
+            'type_id' => ['required', 'exists:activity_types,id'],
+            'status' => ['required', 'in:' . implode(',', $this->activityRepository->status() )],
+            'priority' => ['required', 'in:' . implode(',', $this->activityRepository->priority() )],
+            'owner_id' => ['required', 'exists:users,id'],
+            'description' => ['required', 'string', 'max:150'],
+            'scheduled_date' => ['required', 'date'],
+            'end_date' => ['required', 'date', 'after:scheduled_date'],
+            'follow_up_notes' => ['nullable', 'string', 'min:5', 'max:2000'],
+            'client_id' => ['nullable', 'sometimes', 'exists:clients,id', 'required_without_all:contact_id,opportunity_id'],
+            'contact_id' => ['nullable', 'sometimes', 'exists:contacts,id', 'required_without_all:client_id,opportunity_id'],
+            'opportunity_id' => ['nullable', 'sometimes', 'exists:opportunities,id', 'required_without_all:client_id,contact_id'],
+        ]);
     }
 
 }

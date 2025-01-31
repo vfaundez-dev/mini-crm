@@ -89,7 +89,7 @@ class OpportunityController extends Controller {
             $validatedData = $this->validateRequestData($request);
 
             $opportunity = $this->opportunityRepository->find($id);
-            if (!$opportunity) return redirect()->route('opportunity.index')->withErrors(['error' => 'Opportunity not found.']);
+            if (!$opportunity) return redirect()->route('opportunity.index')->with(['error' => 'Opportunity not found.']);
 
             $formatedData = $this->opportunityService->prepareOpportunity($validatedData, $opportunity);
 
@@ -111,7 +111,7 @@ class OpportunityController extends Controller {
         try {
 
             $opportunity = $this->opportunityRepository->find($id);
-            if (!$opportunity) return redirect()->route('opportunity.index')->withErrors(['error' => 'Opportunity not found.']);
+            if (!$opportunity) return redirect()->route('opportunity.index')->with(['error' => 'Opportunity not found.']);
 
             $this->opportunityRepository->delete($opportunity);
             return redirect()->route('opportunity.index')->with('success', 'Opportunity deleted.');
@@ -126,7 +126,7 @@ class OpportunityController extends Controller {
         try {
 
             $opportunity = $this->opportunityRepository->find($id);
-            if (!$opportunity) return redirect()->route('opportunity.index')->withErrors(['error' => 'Opportunity not found.']);
+            if (!$opportunity) return redirect()->route('opportunity.index')->with(['error' => 'Opportunity not found.']);
             
             $validatedData = $request->validate([
                 'closed_status' => [
@@ -152,16 +152,16 @@ class OpportunityController extends Controller {
 
     protected function validateRequestData(Request $request) {
         return $request->validate([
-            'name' => 'required|string|max:150',
-            'owner_id' => 'required|exists:users,id',
-            'client_id' => 'required|exists:clients,id',
-            'status' => 'required|in:' . implode(',', array_keys($this->opportunityRepository->listStatus())),
-            'stage_id' => 'required|exists:opportunity_stages,id',
-            'source' => 'nullable|string|max:150',
-            'created_date' => 'required|date',
-            'estimated_close_date' => 'nullable|date|after_or_equal:created_date',
-            'actual_close_date' => 'nullable|date|after_or_equal:created_date',
-            'estimated_value' => 'required|numeric|min:0',
+            'name' => ['required', 'string', 'max:150'],
+            'owner_id' => ['required', 'exists:users,id'],
+            'client_id' => ['required', 'exists:clients,id'],
+            'status' => ['required', 'in:' . implode(',', array_keys( $this->opportunityRepository->listStatus() ))],
+            'stage_id' => ['required', 'exists:opportunity_stages,id'],
+            'source' => ['nullable', 'string', 'max:150'],
+            'created_date' => ['required', 'date'],
+            'estimated_close_date' => ['nullable', 'date', 'after_or_equal:created_date'],
+            'actual_close_date' => ['nullable', 'date', 'after_or_equal:created_date'],
+            'estimated_value' => ['required', 'numeric', 'min:0'],
         ]);
     }
 

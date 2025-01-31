@@ -54,9 +54,9 @@ class ContactController extends Controller {
     public function store(Request $request) {
         try {
 
-            $validatedData = $request->validate(self::VALIDATE_RULES);
-            $validatedData['full_name'] = $this->contactRepository->fullName($validatedData['first_name'], $validatedData['last_name']);
-            $this->contactRepository->create($validatedData);
+            $validateData = $this->validateRequestData($request);
+            $validateData['full_name'] = $this->contactRepository->fullName($validateData['first_name'], $validateData['last_name']);
+            $this->contactRepository->create($validateData);
             return redirect()->route('contact.index')->with('success', 'Contact created.');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -90,15 +90,13 @@ class ContactController extends Controller {
     public function update(Request $request, string $id) {
         try {
 
-            $rules = self::VALIDATE_RULES;
-            $rules['email'] .= ',' . $id; // Ignore current contact email rule
-            $validatedData = $request->validate($rules);
-            $validatedData['full_name'] = $this->contactRepository->fullName($validatedData['first_name'], $validatedData['last_name']);
+            $validateData = $this->validateRequestData($request, $id);
+            $validateData['full_name'] = $this->contactRepository->fullName($validateData['first_name'], $validateData['last_name']);
 
             $contact = $this->contactRepository->find($id);
-            if (!$contact) return redirect()->route('contact.index')->withErrors(['error' => 'Contact not found.']);
+            if (!$contact) return redirect()->route('contact.index')->with(['error' => 'Contact not found.']);
 
-            $this->contactRepository->update($contact, $validatedData);
+            $this->contactRepository->update($contact, $validateData);
             return redirect()->route('contact.index')->with('success', 'Contact updated.');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -116,7 +114,7 @@ class ContactController extends Controller {
         try {
 
             $contact = $this->contactRepository->find($id);
-            if (!$contact) return redirect()->route('contact.index')->withErrors(['error' => 'Contact not found.']);
+            if (!$contact) return redirect()->route('contact.index')->with(['error' => 'Contact not found.']);
 
             $this->contactRepository->delete($contact);
             return redirect()->route('contact.index')->with('success', 'Contact deleted.');
@@ -125,6 +123,23 @@ class ContactController extends Controller {
             Log::error('Error in ContactController::destroy: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Error deleting contact. Try again...');
         }
+    }
+
+    protected function validateRequestData(Request $request, $id = null) {
+        return $request->validate([
+            'first_name' => ['required', 'string', 'max:150'],
+            'last_name' => ['required', 'string', 'max:150'],
+            'gender' => ['required', 'in:male,female,other'],
+            'job_title_id' => ['required', 'exists:contact_job_titles,id'],
+            'department_id' => ['required', 'exists:contact_departments,id'],
+            'client_id' => ['nullable', 'exists:clients,id'],
+            'email' => ['required', 'email', ( $id ? 'unique:clients,email,'.$id.',id' : 'unique:clients,email' )],
+            'phone' => ['required', 'numeric', 'min:8'],
+            'address' => ['nullable', 'string', 'min:6'],
+            'country' => ['required', 'string', 'max:150'],
+            'state' => ['nullable', 'string', 'max:150'],
+            'city' => ['nullable', 'string', 'max:150'],
+        ]);
     }
 
 }

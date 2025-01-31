@@ -127,14 +127,14 @@ class UserController extends Controller {
         }
     }
 
-    protected function validateRequestData(Request $request, $userId = null) {
+    protected function validateRequestData(Request $request, $id = null) {
         return $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:150'] ,
             'email' => [
-                'required','email', ( $userId ? 'unique:users,email,'.$userId.',id' : 'unique:users,email' )
+                'required','email', ( $id ? 'unique:users,email,'.$id.',id' : 'unique:users,email' )
             ],
             'password' => [
-                $userId ? 'nullable' : 'required', 'confirmed', Password::min(6)->numbers()->letters(),
+                $id ? 'nullable' : 'required', 'confirmed', Password::min(6)->numbers()->letters(),
             ]
                                 
         ]);

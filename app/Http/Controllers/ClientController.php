@@ -9,23 +9,6 @@ use Illuminate\Support\Facades\Log;
 class ClientController extends Controller {
 
     protected $clientRepository;
-    protected const VALIDATE_RULES = [
-        'name' => 'required|string|max:150',
-        'status_id' => 'required|exists:client_status,id',
-        'type_id' => 'required|exists:client_types,id',
-        'industry_id' => 'required|exists:client_industries,id',
-        'owner_id' => 'required|exists:users,id',
-        'country' => 'required|string|max:150',
-        'state' => 'nullable|string|max:150',
-        'city' => 'nullable|string|max:150',
-        'email' => 'required|email|unique:clients,email',
-        'main_phone' => 'required|numeric|min:8',
-        'secondary_phone' => 'nullable|numeric|min:8',
-        'address_1' => 'required|string|max:150',
-        'address_2' => 'nullable|string|max:150',
-        'address_3' => 'nullable|string|max:150',
-        'website' => 'nullable|string|url:http,https'
-    ];
 
     public function __construct(ClientRepository $clientRepository) {
         $this->clientRepository = $clientRepository;
@@ -53,8 +36,8 @@ class ClientController extends Controller {
     public function store(Request $request) {
         try {
 
-            $validatedData = $request->validate(self::VALIDATE_RULES);
-            $this->clientRepository->create($validatedData);
+            $validateData = $this->validateRequestData($request);
+            $this->clientRepository->create($validateData);
             return redirect()->route('client.index')->with('success', 'Client created.');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -87,14 +70,12 @@ class ClientController extends Controller {
     public function update(Request $request, string $id) {
         try {
 
-            $rules = self::VALIDATE_RULES;
-            $rules['email'] .= ',' . $id; // Ignore current client email rule
-            $validatedData = $request->validate($rules);
+            $validateData = $this->validateRequestData($request, $id);
             
             $client = $this->clientRepository->find($id);
-            if (!$client) return redirect()->route('client.index')->withErrors(['error' => 'Client not found.']);
+            if (!$client) return redirect()->route('client.index')->with(['error' => 'Client not found.']);
 
-            $this->clientRepository->update($client, $validatedData);
+            $this->clientRepository->update($client, $validateData);
             return redirect()->route('client.index')->with('success', 'Client updated.');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -112,7 +93,7 @@ class ClientController extends Controller {
         try {
 
             $client = $this->clientRepository->find($id);
-            if (!$client) return redirect()->route('client.index')->withErrors(['error' => 'Client not found.']);
+            if (!$client) return redirect()->route('client.index')->with(['error' => 'Client not found.']);
 
             $this->clientRepository->delete($client);
             return redirect()->route('client.index')->with('success', 'Client deleted.');
@@ -121,6 +102,26 @@ class ClientController extends Controller {
             Log::error('Error in ClientController::destroy: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Error deleting client. Try again...');
         }
+    }
+
+    protected function validateRequestData(Request $request, $id = null) {
+        return $request->validate([
+            'name' => ['required', 'string', 'max:150'],
+            'status_id' => ['required', 'exists:client_status,id'],
+            'type_id' => ['required', 'exists:client_types,id'],
+            'industry_id' => ['required', 'exists:client_industries,id'],
+            'owner_id' => ['required', 'exists:users,id'],
+            'country' => ['required', 'string', 'max:150'],
+            'state' => ['nullable', 'string', 'max:150'],
+            'city' => ['nullable', 'string', 'max:150'],
+            'email' => ['required', 'email', ( $id ? 'unique:clients,email,'.$id.',id' : 'unique:clients,email' )],
+            'main_phone' => ['required', 'numeric', 'min:8'],
+            'secondary_phone' => ['nullable', 'numeric', 'min:8'],
+            'address_1' => ['required', 'string', 'max:150'],
+            'address_2' => ['nullable', 'string', 'max:150'],
+            'address_3' => ['nullable', 'string', 'max:150'],
+            'website' => ['nullable', 'string', 'url:http,https']
+        ]);
     }
 
 }
