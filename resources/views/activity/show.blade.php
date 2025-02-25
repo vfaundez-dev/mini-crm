@@ -114,13 +114,13 @@
       <div class="card-body">
         <div class="tab-content" id="activity-relations-tabContent">
           <div class="tab-pane fade active show" id="activity-clients" role="tabpanel" aria-labelledby="activity-clients-tab">
-              Clients Here
+            @include('client.partials.table', [ 'clients' => $activity->client ? [$activity->client] : [] ])
           </div>
           <div class="tab-pane fade" id="activity-contacts" role="tabpanel" aria-labelledby="activity-contacts-tab">
-              Contacts Here
+            @include('contact.partials.table', [ 'contacts' => $activity->contact ? [$activity->contact] : [] ])
           </div>
           <div class="tab-pane fade" id="activity-opportunities" role="tabpanel" aria-labelledby="activity-opportunities-tab">
-              Opportunities Here
+            @include('opportunity.partials.table', [ 'opportunities' => $activity->opportunity ? [$activity->opportunity] : [] ])
           </div>
         </div>
       </div>
