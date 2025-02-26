@@ -9,7 +9,7 @@ class OpportunityStage extends Model {
   use HasFactory;
 
   public function opportunity() {
-    return $this->hasOne(Opportunity::class);
+    return $this->hasMany(Opportunity::class);
   }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Opportunity;
+use App\Models\OpportunityStage;
 use App\Models\User;
 use \Illuminate\Support\Collection;
 
@@ -45,6 +46,19 @@ class OpportunityRepository {
       self::STATUS_CLOSED_LOST => 'Closed Lost',
       self::STATUS_CLOSED_WON => 'Closed Won',
     ];
+  }
+
+  public static function opportunitiesByStage(): array {
+    return OpportunityStage::selectRaw('stage, 1 as total')
+      ->groupBy('stage')
+      ->pluck('total', 'stage')
+      ->toArray();
+
+    return Opportunity::leftJoin('opportunity_stages', 'opportunities.stage_id', '=', 'opportunity_stages.id')
+      ->selectRaw('opportunity_stages.stage, COUNT(opportunities.id) as total')
+      ->groupBy('opportunity_stages.stage')
+      ->pluck('total', 'stage')
+      ->toArray();
   }
 
 }

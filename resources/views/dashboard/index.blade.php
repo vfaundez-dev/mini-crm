@@ -15,7 +15,7 @@
 <div class="row">
   <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12">
     <x-adminlte-small-box
-      :title="$clients->count()"
+      :title="$totals['clients']"
       text="Total Clients"
       icon="fas fa-user-tie text-light"
       theme="info"
@@ -25,7 +25,7 @@
   </div>
   <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12">
     <x-adminlte-small-box
-      :title="$contacts->count()"
+      :title="$totals['contacts']"
       text="Total Contacts"
       icon="fas fa-address-book text-light"
       theme="olive"
@@ -35,7 +35,7 @@
   </div>
   <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12">
     <x-adminlte-small-box
-      :title="$activities->count()"
+      :title="$totals['activities']"
       text="Total Activities"
       icon="fas fa-clipboard-list text-light"
       theme="lightblue"
@@ -45,7 +45,7 @@
   </div>
   <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-xs-12">
     <x-adminlte-small-box
-      :title="$opportunities->count()"
+      :title="$totals['opportunities']"
       text="Total Oportunities"
       icon="fas fa-hand-holding-usd text-light"
       theme="purple"
@@ -57,8 +57,10 @@
 {{-- Widgets --}}
 
 <div class="row">
-  <div class="col-6">
-    <canvas id="chart1"></canvas>
+  <div class="col-3">
+    <x-adminlte-card title="Opportunities by Stage" theme="purple" icon="fas fa-chart-pie" maximizable>
+      <canvas id="chartOppByStage"></canvas>
+    </x-adminlte-card>
   </div>
 </div>
 
@@ -70,7 +72,7 @@
 
 
 @push('js')
-<script>
-
+<script id="opportunities-data" type="application/json">
+  {!! json_encode($opportunitiesByStage) !!}
 </script>
 @endpush
