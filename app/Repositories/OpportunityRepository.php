@@ -49,11 +49,6 @@ class OpportunityRepository {
   }
 
   public static function opportunitiesByStage(): array {
-    return OpportunityStage::selectRaw('stage, 1 as total')
-      ->groupBy('stage')
-      ->pluck('total', 'stage')
-      ->toArray();
-
     return Opportunity::leftJoin('opportunity_stages', 'opportunities.stage_id', '=', 'opportunity_stages.id')
       ->selectRaw('opportunity_stages.stage, COUNT(opportunities.id) as total')
       ->groupBy('opportunity_stages.stage')

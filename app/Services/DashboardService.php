@@ -40,4 +40,21 @@ class DashboardService {
     return OpportunityRepository::opportunitiesByStage();
   }
 
+  public function getEstimatedRevenue(): float {
+    return $this->opportunities->sum( fn($row) => $row->estimated_value * ($row->success_probability / 100) );
+  }
+
+  public function totalValue(): float {
+    return $this->opportunities->sum('estimated_value');
+  }
+
+  public function getActivitiesProgress() {
+    return [
+      'pending' => $this->activities->where('status', ActivityRepository::STATUS[0])->count(),
+      'in_progress' => $this->activities->where('status', ActivityRepository::STATUS[1])->count(),
+      'completed' => $this->activities->where('status', ActivityRepository::STATUS[2])->count(),
+      'canceled' => $this->activities->where('status', ActivityRepository::STATUS[3])->count(),
+    ];
+  }
+
 }

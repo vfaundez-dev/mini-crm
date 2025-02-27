@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function chartOppByStage() {
   const canvaOppByStage = document.getElementById('chartOppByStage').getContext('2d')
-  const dataOppStage = JSON.parse(document.getElementById('opportunities-data').textContent);
+  const dataOppStage = JSON.parse(document.getElementById('opp-stages-data').textContent);
   const labelsStage = Object.keys(dataOppStage);
   const dataStage = Object.values(dataOppStage);
 
