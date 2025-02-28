@@ -440,6 +440,16 @@ return [
                     'asset' => true,
                     'location' => 'vendor/chart.js/Chart.bundle.min.js',
                 ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/chart.js/chartjs.funnel.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/chart.js/chartjs-plugin-datalabels.min.js',
+                ],
             ],
         ],
     ],

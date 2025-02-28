@@ -57,4 +57,8 @@ class DashboardService {
     ];
   }
 
+  public function getOpportunitiesPipeline() {
+    return OpportunityRepository::getPipelineData()->toArray();
+  }
+
 }

@@ -56,4 +56,12 @@ class OpportunityRepository {
       ->toArray();
   }
 
+  public static function getPipelineData(): Collection {
+    return Opportunity::leftJoin('opportunity_stages', 'opportunities.stage_id', '=', 'opportunity_stages.id')
+      ->selectRaw('opportunity_stages.stage, COUNT(opportunities.id) as total, SUM(opportunities.estimated_value) as total_value')
+      ->groupBy('opportunity_stages.stage')
+      ->orderBy('total_value', 'desc')
+      ->get();
+  }
+
 }

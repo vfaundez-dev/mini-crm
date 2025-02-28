@@ -18,7 +18,7 @@
       :title="$totals['clients']"
       text="Total Clients"
       icon="fas fa-user-tie text-light"
-      theme="info"
+      theme="teal"
       :url="route('client.index')"
       url-text="View all clients"
     />
@@ -58,76 +58,80 @@
 
 <div class="row">
 
-  <div class="col-md-5">
+  {{-- Opp Pipeline --}}
+  <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-12">
+    <x-adminlte-card title="Opportunities Pipeline" theme="purple" icon="fas fa-chart-pie" maximizable>
+      <canvas id="chartOppPipeline" data-opppipeline='@json($getOpportunitiesPipeline)'></canvas>
+    </x-adminlte-card>
   </div>
+  {{-- Opp Pipeline --}}
 
-  <div class="col-md-3">
+  {{-- Activities Status --}}
+  <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-xs-12">
+    <x-adminlte-card title="Activities Status" theme="lightblue" icon="fas fa-info">
 
-    <div class="col-12">
-      <x-adminlte-card title="Activities Status" theme="lightblue" icon="fas fa-info">
+      {{-- Item Activities --}}
+      <div class="d-flex justify-content-between align-items-center border-bottom mb-3 text-secondary">
+        <p class="text-xl">
+          <i class="fas fa-ellipsis-h"></i>
+        </p>
+        <p class="d-flex flex-column text-right">
+          <span class="font-weight-bold text-xl">
+            {{ $getActivitiesProgress['pending'] ?? 0 }}
+          </span>
+          <span class="text-muted">PENDING</span>
+        </p>
+      </div>
+      {{-- Item Activities --}}
 
-        {{-- Item Activities --}}
-        <div class="d-flex justify-content-between align-items-center border-bottom mb-3 text-secondary">
-          <p class="text-xl">
-            <i class="fas fa-ellipsis-h"></i>
-          </p>
-          <p class="d-flex flex-column text-right">
-            <span class="font-weight-bold text-xl">
-              {{ $getActivitiesProgress['pending'] ?? 0 }}
-            </span>
-            <span class="text-muted">PENDING</span>
-          </p>
-        </div>
-        {{-- Item Activities --}}
+      {{-- Item Activities --}}
+      <div class="d-flex justify-content-between align-items-center border-bottom mb-3 text-info">
+        <p class="text-xl">
+          <i class="fas fa-spinner"></i>
+        </p>
+        <p class="d-flex flex-column text-right">
+          <span class="font-weight-bold text-xl">
+            {{ $getActivitiesProgress['in_progress'] ?? 0 }}
+          </span>
+          <span class="text-muted">IN PROGRESS</span>
+        </p>
+      </div>
+      {{-- Item Activities --}}
 
-        {{-- Item Activities --}}
-        <div class="d-flex justify-content-between align-items-center border-bottom mb-3 text-info">
-          <p class="text-xl">
-            <i class="fas fa-spinner"></i>
-          </p>
-          <p class="d-flex flex-column text-right">
-            <span class="font-weight-bold text-xl">
-              {{ $getActivitiesProgress['in_progress'] ?? 0 }}
-            </span>
-            <span class="text-muted">IN PROGRESS</span>
-          </p>
-        </div>
-        {{-- Item Activities --}}
+      {{-- Item Activities --}}
+      <div class="d-flex justify-content-between align-items-center border-bottom mb-3 text-success">
+        <p class="text-xl">
+          <i class="fas fa-check"></i>
+        </p>
+        <p class="d-flex flex-column text-right">
+          <span class="font-weight-bold text-xl">
+            {{ $getActivitiesProgress['completed'] ?? 0 }}
+          </span>
+          <span class="text-muted">COMPLETED</span>
+        </p>
+      </div>
+      {{-- Item Activities --}}
 
-        {{-- Item Activities --}}
-        <div class="d-flex justify-content-between align-items-center border-bottom mb-3 text-success">
-          <p class="text-xl">
-            <i class="fas fa-check"></i>
-          </p>
-          <p class="d-flex flex-column text-right">
-            <span class="font-weight-bold text-xl">
-              {{ $getActivitiesProgress['completed'] ?? 0 }}
-            </span>
-            <span class="text-muted">COMPLETED</span>
-          </p>
-        </div>
-        {{-- Item Activities --}}
+      {{-- Item Activities --}}
+      <div class="d-flex justify-content-between align-items-center border-bottom mb-2 text-danger">
+        <p class="text-xl">
+          <i class="fas fa-times"></i>
+        </p>
+        <p class="d-flex flex-column text-right">
+          <span class="font-weight-bold text-xl">
+            {{ $getActivitiesProgress['canceled'] ?? 0 }}
+          </span>
+          <span class="text-muted">CANCELED</span>
+        </p>
+      </div>
+      {{-- Item Activities --}}
 
-        {{-- Item Activities --}}
-        <div class="d-flex justify-content-between align-items-center border-bottom mb-2 text-danger">
-          <p class="text-xl">
-            <i class="fas fa-times"></i>
-          </p>
-          <p class="d-flex flex-column text-right">
-            <span class="font-weight-bold text-xl">
-              {{ $getActivitiesProgress['canceled'] ?? 0 }}
-            </span>
-            <span class="text-muted">CANCELED</span>
-          </p>
-        </div>
-        {{-- Item Activities --}}
-
-      </x-adminlte-card>
-    </div>
-
+    </x-adminlte-card>
   </div>
+  {{-- Activities Status --}}
 
-  <div class="col-md-4 mh-100">
+  <div class="col-xl-4 col-lg-4 col-md-7 col-sm-12 col-xs-12">
+
     {{-- Opp Values --}}
     <div class="row">
       <div class="col-md-12">
@@ -138,7 +142,7 @@
             <div class="col-sm-6 col-6 border-right">
               <div class="description-block">
                 <h4 class="font-weight-bold mb-0">${{ $opportunitiesEstimatedRevenue ?? '0.0' }}</h4>
-                <span class="description-text">OPP ESTIMATED REVENUE</span>
+                <span class="description-text">ESTIMATED REVENUE</span>
               </div>
             </div>
             {{-- Value Block --}}
@@ -147,7 +151,7 @@
             <div class="col-sm-6 col-6">
               <div class="description-block">
                 <h4 class="font-weight-bold mb-0">${{ $totalValue ?? '0.0' }}</h4>
-                <span class="description-text">OPP TOTAL VALUE</span>
+                <span class="description-text">TOTAL VALUE</span>
               </div>
             </div>
             {{-- Value Block --}}
@@ -157,19 +161,20 @@
       </div>
     </div>
     {{-- Opp Values --}}
+
+    {{-- Opp by Stage --}}
     <div class="row">
-      {{-- Opp by Stage --}}
       <div class="col-md-12">
         <x-adminlte-card title="Opportunities by Stage" theme="purple" icon="fas fa-chart-pie" maximizable>
-          <canvas id="chartOppByStage"></canvas>
+          <canvas id="chartOppByStage" data-oppstage='@json($opportunitiesByStage)'></canvas>
         </x-adminlte-card>
       </div>
-      {{-- Opp by Stage --}}
     </div>
+    {{-- Opp by Stage --}}
+
   </div>
 
 </div>
-
 
 
 @stop
@@ -180,7 +185,8 @@
 
 
 @push('js')
-<script id="opp-stages-data" type="application/json">
+{{-- <script id="opp-stages-data" type="application/json">
   {!! json_encode($opportunitiesByStage) !!}
-</script>
+</script> --}}
+
 @endpush
