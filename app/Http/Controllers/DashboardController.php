@@ -22,6 +22,7 @@ class DashboardController extends Controller {
             'opportunitiesEstimatedRevenue' => number_format($this->dashboardService->getEstimatedRevenue(), 2, ',', '.'),
             'getActivitiesProgress' => $this->dashboardService->getActivitiesProgress(),
             'getOpportunitiesPipeline' => $this->dashboardService->getOpportunitiesPipeline(),
+            'getLastActivities' => $this->dashboardService->getLastActivities(),
         ]);
     }
     

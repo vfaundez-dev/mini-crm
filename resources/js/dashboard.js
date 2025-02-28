@@ -43,11 +43,10 @@ function chartOppPipeline() {
     type: 'horizontalBar',
     data: {
       labels: ['Stage 1', 'Stage 2', 'Stage 3', 'Stage 4', 'Stage 5', 'Stage 6', 'Stage 7'],
-      //labels: labelsPipeline,
+      labels: labelsPipeline,
       datasets: [{
         label: 'Opportunities by Pipeline',
-        data: [700000, 600000, 500000, 400000, 300000, 200000, 100000],
-        //data: valuesPipeline,
+        data: valuesPipeline,
         backgroundColor: ['#f94144', '#577590', '#f3722c', '#43aa8b', '#f8961e', '#90be6d', '#f9c74f'],
         borderColor: '#FFF',
         borderWidth: 1

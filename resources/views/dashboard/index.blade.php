@@ -61,7 +61,7 @@
   {{-- Opp Pipeline --}}
   <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-12">
     <x-adminlte-card title="Opportunities Pipeline" theme="purple" icon="fas fa-chart-pie" maximizable>
-      <canvas id="chartOppPipeline" data-opppipeline='@json($getOpportunitiesPipeline)'></canvas>
+      <canvas id="chartOppPipeline" class="my-2 my-lg-5" data-opppipeline='@json($getOpportunitiesPipeline)'></canvas>
     </x-adminlte-card>
   </div>
   {{-- Opp Pipeline --}}
@@ -166,7 +166,7 @@
     <div class="row">
       <div class="col-md-12">
         <x-adminlte-card title="Opportunities by Stage" theme="purple" icon="fas fa-chart-pie" maximizable>
-          <canvas id="chartOppByStage" data-oppstage='@json($opportunitiesByStage)'></canvas>
+          <canvas id="chartOppByStage" class="my-3" data-oppstage='@json($opportunitiesByStage)'></canvas>
         </x-adminlte-card>
       </div>
     </div>
@@ -176,6 +176,59 @@
 
 </div>
 
+<div class="row">
+  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+    <x-adminlte-card
+      title="Last Activities"
+      theme="lightblue"
+      icon="fas fa-clipboard-list"
+      body-class="bg-lightblue p-0"
+      collapsible
+    >
+      <div class="table-responsive">
+        <table id="table-activities" class="table m-0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Scheduled Date</th>
+              <th>End Date</th>
+              <th>Owner</th>
+              <th>Completed</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($getLastActivities as $activity)
+            <tr>
+              <td>
+                <a href="{{ route('activity.edit', $activity['id']) }}" class="text-white font-weight-bold">
+                  {{ $activity['id'] }}
+                </a>
+              </td>
+              <td>{{ $activity['name'] ?? '' }}</td>
+              <td>{{ $activity['status'] ?? '' }}</td>
+              <td>{{ $activity['priority'] ?? '' }}</td>
+              <td>{{ \Carbon\Carbon::parse( $activity['scheduled_date'] )->format('Y-m-d') ?? '' }}</td>
+              <td>{{ \Carbon\Carbon::parse( $activity['end_date'] )->format('Y-m-d') ?? '' }}</td>
+              <td>{{ $activity['owner'] ?? '' }}</td>
+              <td class="text-center">
+                <span class="badge {{ $activity['completed'] ? 'badge-success' : 'badge-danger' }} text-md">
+                  {{ $activity['completed'] ? 'YES' : 'NO' }}
+                </span>
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </x-adminlte-card>
+  </div>
+  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+  </div>
+</div>
 
 @stop
 
@@ -185,8 +238,5 @@
 
 
 @push('js')
-{{-- <script id="opp-stages-data" type="application/json">
-  {!! json_encode($opportunitiesByStage) !!}
-</script> --}}
 
 @endpush

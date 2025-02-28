@@ -61,4 +61,15 @@ class DashboardService {
     return OpportunityRepository::getPipelineData()->toArray();
   }
 
+  public function getLastActivities($limit = 10) {
+    return $this->activities
+        ->sortByDesc('created_at')
+        ->take($limit)
+        ->map(function ($activity) {
+          return $activity->only(
+            ['id', 'completed', 'name', 'status', 'priority', 'scheduled_date', 'end_date']) +
+            ['owner' => $activity->owner->name ?? ''];
+        });
+  }
+
 }
