@@ -72,4 +72,15 @@ class DashboardService {
         });
   }
 
+  public function getLastClients($limit = 10) {
+    return $this->clients
+        ->sortByDesc('created_at')
+        ->take($limit)
+        ->map(function ($client) {
+          return $client->only(
+            ['id', 'status', 'name', 'email', 'country', 'type', 'city']) +
+            ['owner' => $client->owner->name ?? ''];
+        });
+  }
+
 }

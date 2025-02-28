@@ -23,6 +23,7 @@ class DashboardController extends Controller {
             'getActivitiesProgress' => $this->dashboardService->getActivitiesProgress(),
             'getOpportunitiesPipeline' => $this->dashboardService->getOpportunitiesPipeline(),
             'getLastActivities' => $this->dashboardService->getLastActivities(),
+            'getLastClients' => $this->dashboardService->getLastClients(),
         ]);
     }
     

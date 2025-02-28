@@ -177,6 +177,7 @@
 </div>
 
 <div class="row">
+  {{-- Last Activities --}}
   <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
     <x-adminlte-card
       title="Last Activities"
@@ -225,10 +226,54 @@
       </div>
     </x-adminlte-card>
   </div>
-  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-
+  {{-- Last Activities --}}
+  {{-- Last Clients --}}
+  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+    <x-adminlte-card
+      title="Last Clients"
+      theme="teal"
+      icon="fas fa-user-tie"
+      body-class="bg-teal p-0"
+      collapsible
+    >
+      <div class="table-responsive">
+        <table id="table-activities" class="table m-0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Status</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Country</th>
+              <th>Owner</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($getLastClients as $client)
+            <tr>
+              <td>
+                <a href="{{ route('client.edit', $client['id']) }}" class="text-white font-weight-bold">
+                  {{ $client['id'] }}
+                </a>
+              </td>
+              <td>{{ $client['status']['status'] ?? '' }}</td>
+              <td>{{ $client['name'] ?? '' }}</td>
+              <td>{{ $client['email'] ?? '' }}</td>
+              <td>{{ $client['country'] ?? '' }}</td>
+              <td>{{ $client['owner'] ?? '' }}</td>
+              <td>{{ $client['type']['type'] ?? '' }}</td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </x-adminlte-card>
   </div>
+  {{-- Last Clients --}}
 </div>
+
+
 
 @stop
 
