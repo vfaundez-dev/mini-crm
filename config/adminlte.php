@@ -316,6 +316,11 @@ return [
             'text' => 'search',
         ],
         [
+            'text' => 'Dashboard',
+            'route' => 'dashboard.index',
+            'icon' => 'fas fa-desktop',
+        ],
+        [
             'text' => 'Clients',
             'route' => 'client.index',
             'icon' => 'fas fa-briefcase',
