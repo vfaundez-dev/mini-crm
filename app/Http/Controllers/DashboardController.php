@@ -18,8 +18,8 @@ class DashboardController extends Controller {
         return view('dashboard.index', [
             'totals' => $this->dashboardService->getTotals(),
             'opportunitiesByStage' => $this->dashboardService->getOpportunitiesByStage(),
-            'totalValue' => number_format($this->dashboardService->totalValue(), 2, ',', '.'),
-            'opportunitiesEstimatedRevenue' => number_format($this->dashboardService->getEstimatedRevenue(), 2, ',', '.'),
+            'totalValue' => number_format($this->dashboardService->totalValue(), 2, '.', ','),
+            'opportunitiesEstimatedRevenue' => number_format($this->dashboardService->getEstimatedRevenue(), 2, '.', ','),
             'getActivitiesProgress' => $this->dashboardService->getActivitiesProgress(),
             'getOpportunitiesPipeline' => $this->dashboardService->getOpportunitiesPipeline(),
             'getLastActivities' => $this->dashboardService->getLastActivities(),

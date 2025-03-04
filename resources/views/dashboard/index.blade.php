@@ -309,7 +309,7 @@
                   <div class="description-block">
                     <span class="description-header text-secondary text-sm">TOTAL</span>
                     <h4 class="description-text text-fuchsia font-weight-bold">
-                      ${{ number_format($topUser->total_value, 2, ',', '.') ?? 0}}
+                      ${{ number_format($topUser->total_value, 2, '.', ',') ?? 0}}
                     </h3>
                   </div>
                 </div>
