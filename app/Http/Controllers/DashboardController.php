@@ -24,6 +24,7 @@ class DashboardController extends Controller {
             'getOpportunitiesPipeline' => $this->dashboardService->getOpportunitiesPipeline(),
             'getLastActivities' => $this->dashboardService->getLastActivities(),
             'getLastClients' => $this->dashboardService->getLastClients(),
+            'topUsersClosedWonOpp' => $this->dashboardService->topUsersClosedWonOpp(),
         ]);
     }
     

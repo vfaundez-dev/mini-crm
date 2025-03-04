@@ -61,18 +61,18 @@ class DashboardService {
     return OpportunityRepository::getPipelineData()->toArray();
   }
 
-  public function getLastActivities($limit = 10) {
+  public function getLastActivities($limit = 5) {
     return $this->activities
         ->sortByDesc('created_at')
         ->take($limit)
-        ->map(function ($activity) {
+        ->map( function ($activity) {
           return $activity->only(
             ['id', 'completed', 'name', 'status', 'priority', 'scheduled_date', 'end_date']) +
             ['owner' => $activity->owner->name ?? ''];
         });
   }
 
-  public function getLastClients($limit = 10) {
+  public function getLastClients($limit = 5) {
     return $this->clients
         ->sortByDesc('created_at')
         ->take($limit)
@@ -81,6 +81,10 @@ class DashboardService {
             ['id', 'status', 'name', 'email', 'country', 'type', 'city']) +
             ['owner' => $client->owner->name ?? ''];
         });
+  }
+
+  public function topUsersClosedWonOpp() {
+    return OpportunityRepository::topUsersClosedWonOpp(3);
   }
 
 }

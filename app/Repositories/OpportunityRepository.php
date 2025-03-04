@@ -64,4 +64,21 @@ class OpportunityRepository {
       ->get();
   }
 
+  public static function topUsersClosedWonOpp($limit = 3) {
+    return Opportunity::selectRaw('
+          users.id,
+          users.name,
+          users.email,
+          COUNT(opportunities.id) AS total_opportunities,
+          SUM(opportunities.estimated_value) AS total_value
+        ')
+      ->leftJoin('users', 'users.id', '=', 'opportunities.owner_id')
+      ->where('opportunities.status', self::STATUS_CLOSED_WON)
+      ->groupBy('users.id', 'users.name', 'users.email')
+      ->orderBy('total_opportunities', 'desc')
+      ->orderBy('total_value', 'desc')
+      ->limit($limit)
+      ->get();
+  }
+
 }
