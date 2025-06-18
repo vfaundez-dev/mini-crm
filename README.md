@@ -4,10 +4,11 @@ For English version, see [README_EN.md](README_EN.md)
 
 ## Descripción
 
-**VFH Mini CRM** es un sistema sencillo que implementa las funcionalidades básicas de un CRM. 
+**VFH Mini CRM** es un sistema sencillo que implementa las funcionalidades básicas de un CRM.
 Este sistema sigue el **patrón repositorio**, lo que permite manejar el flujo de datos de forma organizada y eficiente.
 
-### Características principales:
+### Características principales
+
 - Implementación del patrón repositorio.
 - CRUD completo para todos los módulos.
 - Validaciones y métodos específicos en cada módulo.
@@ -34,18 +35,22 @@ Para ejecutar **VFH Mini CRM**, asegúrate de contar con los siguientes requisit
 ## Instalación
 
 ### 1. Clonar el repositorio
+
 ```bash
   git clone https://github.com/vfaundez-dev/mini-crm.git
   cd vfh-mini-crm
 ```
 
 ### 2. Configurar entorno
+
 Copiar el archivo de entorno y configurar los parámetros necesarios:
+
 ```bash
 cp .env.example .env
 ```
 
 Modificar las credenciales de la base de datos en el archivo `.env`:
+
 ```env
 DB_HOST=tu_host
 DB_DATABASE=vfh_mini_crm
@@ -54,41 +59,50 @@ DB_PASSWORD=tu_contraseña
 ```
 
 ### 3. Instalar dependencias
+
 ```bash
 composer install
 npm install
 ```
 
 ### 4. Generar clave de aplicación
+
 ```bash
 php artisan key:generate
 ```
 
 ### 5. Crear la base de datos
+
 Asegúrate de que la base de datos **vfh_mini_crm** esté creada en MySQL.
 
 ### 6. Ejecutar migraciones y seeders
+
 ```bash
 php artisan migrate --seed
 ```
 
 ### 7. Instalar AdminLTE y plugins asociados
+
 ```bash
 npm run build
 ```
 
 ### 8. Iniciar servidores
+
 Iniciar servidor de desarrollo para AdminLTE:
+
 ```bash
 npm run dev
 ```
 
 Iniciar servidor de Laravel:
+
 ```bash
 php artisan serve
 ```
 
 ## Uso
+
 Accede al sistema a través de: [http://localhost:8000](http://localhost:8000) o tu host configurado.
 
 ## Licencia
@@ -97,6 +111,7 @@ Accede al sistema a través de: [http://localhost:8000](http://localhost:8000) o
 Este proyecto está licenciado bajo la [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
 ### Resumen
+
 - **Atribución**: Debe proporcionar crédito adecuado al autor original.
 - **No Comercial**: No puede utilizar el material para fines comerciales.
 - **Sin Derivados**: Si remezcla, transforma o crea a partir del material, no puede distribuir el material modificado.
